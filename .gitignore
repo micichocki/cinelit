@@ -1,0 +1,8 @@
+# created by virtualenv automatically
+.idea/
+cineLit/venv/
+cineLit/.env
+cineLit/pyvenv.cfg
+cineLit/Lib/
+cineLit/Scripts/
+cineLit/__pycache__/
