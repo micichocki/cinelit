@@ -1,8 +1,12 @@
 <nav color="primary">
-    <a [routerLink]="['/home']"><mat-icon>home</mat-icon>home</a>
-    <a [routerLink]="['/current']"><mat-icon>home</mat-icon>current</a>
-    <a [routerLink]="['/collection']"><mat-icon>home</mat-icon>collection</a>
-    <a [routerLink]="['/stats']"><mat-icon>home</mat-icon>stats</a>
-    <a [routerLink]="['/settings']"><mat-icon>home</mat-icon>settings</a>
+    @for (subpage of subpages; track subpage.name) {
+        <a [routerLink]="[subpage.routerLink]" [ngClass]="{'active': currentSubpage && currentSubpage === subpage.name}">
+            <mat-icon>{{subpage.icon }}</mat-icon>
+            {{ subpage.name }}
+        </a>
+    }
+    <a [routerLink]="['/settings']" class="nav-avatar">
+        <img class="avatar-img-nav" src="assets/images/avatar-img1.png">
+    </a>
 </nav>
 <router-outlet></router-outlet>

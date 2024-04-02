@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MainStoreService } from '../store/main-store.service';
 
 @Component({
   selector: 'app-collection',
@@ -8,5 +9,9 @@ import { Component } from '@angular/core';
   styleUrl: './collection.component.scss'
 })
 export class CollectionComponent {
+  constructor(private store: MainStoreService) {}
 
+  ngOnInit() {
+    this.store.setCurrentSubpage('Collection');
+  }
 }

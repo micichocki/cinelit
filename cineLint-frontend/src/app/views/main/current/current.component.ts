@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MainStoreService } from '../store/main-store.service';
 
 @Component({
   selector: 'app-current',
@@ -8,5 +9,9 @@ import { Component } from '@angular/core';
   styleUrl: './current.component.scss'
 })
 export class CurrentComponent {
+  constructor(private store: MainStoreService) {}
 
+  ngOnInit() {
+    this.store.setCurrentSubpage('Current');
+  }
 }
