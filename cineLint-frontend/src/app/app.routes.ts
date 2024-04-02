@@ -6,6 +6,7 @@ import { CurrentComponent } from './views/main/current/current.component';
 import { CollectionComponent } from './views/main/collection/collection.component';
 import { StatsComponent } from './views/main/stats/stats.component';
 import { SettingsComponent } from './views/main/settings/settings.component';
+import { ItemViewComponent } from './views/item-view/item-view.component';
 
 export const routes: Routes = [
     {
@@ -38,6 +39,10 @@ export const routes: Routes = [
     {
         path: 'login',
         component: LoginComponent,
+    },
+    {
+        path: 'itemView',
+        component: ItemViewComponent,
     },
     {
         path: '**',

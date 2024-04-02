@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MainStoreService } from '../store/main-store.service';
 
 @Component({
   selector: 'app-settings',
@@ -8,5 +9,9 @@ import { Component } from '@angular/core';
   styleUrl: './settings.component.scss'
 })
 export class SettingsComponent {
+  constructor(private store: MainStoreService) {}
 
+  ngOnInit() {
+    this.store.setCurrentSubpage('Settings');
+  }
 }

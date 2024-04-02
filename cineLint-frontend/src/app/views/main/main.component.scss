@@ -1,9 +1,16 @@
 :host {
+    background-color: var(--primary-2);
+    height: 100vh;
+    display: block;
     nav {
         display: flex;
         align-items: center;
         justify-content: space-evenly;
         padding: 1rem;
+        background-color: var(--primary);
+        font-size: 24px;
+        font-weight: 500;
+        height: 5rem;
 
         a {
             all: unset;
@@ -11,6 +18,24 @@
             align-items: center;
             justify-content: center;
             gap: 1rem;
+            cursor: pointer;
+
+            &.active {
+                font-weight: bold;
+                transform: scale(1.02);
+            }
+
+            &.nav-avatar {
+                width: 3rem;
+                height: 3rem;
+                background-color: var(--accent);
+                border-radius: 50%;
+                display: inline-block;
+
+                img {
+                    max-width: 100%;
+                }
+            }
         }
     }
 }

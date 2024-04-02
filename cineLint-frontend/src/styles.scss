@@ -6,3 +6,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 *, *::after, *::before {
     box-sizing: border-box;
 }
+
+:root {
+    --primary: #F9C784;
+    --primary-2: #FFF8E1;
+    --accent: #FF8C42;
+}
