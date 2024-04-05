@@ -1,89 +1,68 @@
+from django.contrib.auth.models import User
 from django.db import models
 
-class Authors(models.Model):
-    author_id = models.AutoField(primary_key=True)
+class Author(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
 
     class Meta:
-        managed = False
-        db_table = 'authors'
         unique_together = (('first_name', 'last_name'),)
 
+class AuthorBook(models.Model):
+    author = models.OneToOneField(Author, models.CASCADE, primary_key=True)
+    book = models.ForeignKey('Book', models.DO_NOTHING)
 
-class Authorsbooks(models.Model):
-    author = models.OneToOneField(Authors, models.DO_NOTHING, primary_key=True)  # The composite primary key (author_id, book_id) found, that is not supported. The first column is selected.
-    book = models.ForeignKey('Books', models.DO_NOTHING)
+    def __str__(self):
+        return f"{self.author.first_name} {self.author.last_name}'s Book: {self.book.title}"
 
     class Meta:
-        managed = False
-        db_table = 'authorsbooks'
         unique_together = (('author', 'book'),)
 
-
-class Books(models.Model):
-    book_id = models.AutoField(primary_key=True)
+class Book(models.Model):
     title = models.CharField(unique=True, max_length=255)
     num_of_pages = models.IntegerField()
-    cover_url = models.CharField(max_length=255, blank=True, null=True)
+    cover = models.FileField(blank=True, null=True)
+    authors = models.ManyToManyField(Author, through=AuthorBook)
+    genre = models.ForeignKey('Genre', models.DO_NOTHING)
+
+    def __str__(self):
+        return f'{self.title}: {self.genre.genre_name}'
+
+class Collection(models.Model):
+    user = models.OneToOneField(User, models.CASCADE, primary_key=True)
+    book = models.ForeignKey(Book, models.DO_NOTHING)
+
+    def __str__(self):
+        return f"{self.user.username}'s Collection: {self.book.title}"
 
     class Meta:
-        managed = False
-        db_table = 'books'
-
-
-class Booksgenres(models.Model):
-    book = models.OneToOneField(Books, models.DO_NOTHING, primary_key=True)  # The composite primary key (book_id, genre_id) found, that is not supported. The first column is selected.
-    genre = models.ForeignKey('Genres', models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'booksgenres'
-        unique_together = (('book', 'genre'),)
-
-
-class Collections(models.Model):
-    user = models.OneToOneField('Users', models.DO_NOTHING, primary_key=True)  # The composite primary key (user_id, book_id) found, that is not supported. The first column is selected.
-    book = models.ForeignKey(Books, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'collections'
         unique_together = (('user', 'book'), ('user', 'book'),)
 
-class Genres(models.Model):
-    genre_id = models.AutoField(primary_key=True)
+class Genre(models.Model):
     genre_name = models.CharField(unique=True, max_length=255)
 
-    class Meta:
-        managed = False
-        db_table = 'genres'
-
-
-class Readingsessions(models.Model):
-    session_id = models.AutoField(primary_key=True)
-    book = models.ForeignKey(Books, models.DO_NOTHING)
+class ReadingSession(models.Model):
+    book = models.ForeignKey(Book, models.DO_NOTHING)
     end_date = models.DateTimeField()
-    pages_read = models.IntegerField()
-    user = models.ForeignKey('Users', models.DO_NOTHING)
+    pages_read = models.IntegerField(blank=True)
+    user = models.ForeignKey(User, models.CASCADE)
     duration = models.IntegerField()
     start_date = models.DateTimeField()
 
-    class Meta:
-        managed = False
-        db_table = 'readingsessions'
+    def __str__(self):
+        return f"Reading Session of '{self.book.title}' by {self.user.username}"
 
-
-class Userbookstats(models.Model):
-    user = models.OneToOneField('Users', models.DO_NOTHING, primary_key=True)  # The composite primary key (user_id, book_id) found, that is not supported. The first column is selected.
-    book = models.ForeignKey(Books, models.DO_NOTHING)
-    total_reading_time = models.IntegerField()
-    sessions_count = models.IntegerField()
-    pages_read_count = models.IntegerField()
+class UserBookStat(models.Model):
+    user = models.OneToOneField(User, models.CASCADE, primary_key=True)
+    book = models.ForeignKey(Book, models.DO_NOTHING)
+    total_reading_time = models.IntegerField(blank=True)
+    sessions_count = models.IntegerField(blank=True)
+    pages_read_count = models.IntegerField(blank=True)
     last_session_end = models.DateTimeField()
-    reading_speed = models.DecimalField(max_digits=65535, decimal_places=65535)
+    reading_speed = models.DecimalField(max_digits=5, decimal_places=5, help_text='Reading speed in pages per minute')
+
+    def __str__(self):
+        return f"User: {self.user.username}, Book: {self.book.title}"
 
     class Meta:
-        managed = False
-        db_table = 'userbookstats'
         unique_together = (('user', 'book'),)
