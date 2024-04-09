@@ -4,14 +4,14 @@ from books.models import Author, Book, Genre, ReadingSession, UserBookStat, Coll
 
 
 class AuthorAdmin(admin.ModelAdmin):
-    list_display = ['id', 'first_name', 'last_name']
+    list_display = ['first_name', 'last_name']
     search_fields = ['first_name', 'last_name']
 
 admin.site.register(Author, AuthorAdmin)
 
 
 class BookAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'genre', 'get_authors']
+    list_display = ['title', 'genre', 'get_authors']
     search_fields = ['title', 'genre']
 
     def get_authors(self, obj):
@@ -28,14 +28,14 @@ admin.site.register(Collection, CollectionAdmin)
 
 
 class GenreAdmin(admin.ModelAdmin):
-    list_display = ['id', 'genre_name']
+    list_display = ['genre_name']
     search_fields = ['genre_name']
 
 admin.site.register(Genre, GenreAdmin)
 
 
 class ReadingSessionAdmin(admin.ModelAdmin):
-    list_display = ['id', 'user', 'book', 'pages_read', 'start_date', 'end_date', 'duration']
+    list_display = ['user', 'book', 'pages_read', 'start_date', 'end_date', 'duration']
     search_fields = ['user', 'book']
 
 admin.site.register(ReadingSession, ReadingSessionAdmin)
@@ -43,7 +43,6 @@ admin.site.register(ReadingSession, ReadingSessionAdmin)
 
 class UserBookStatAdmin(admin.ModelAdmin):
     list_display = [
-        'id',
         'user',
         'book',
         'total_reading_time',

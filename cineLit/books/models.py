@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser, User
+from django.conf import settings
 from django.db import models
 
 class Author(models.Model):
@@ -22,7 +22,7 @@ class Book(models.Model):
         return f'{self.title}: {self.genre.genre_name}'
 
 class Collection(models.Model):
-    user = models.ForeignKey(User, models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)
     book = models.ForeignKey(Book, models.CASCADE)
 
     def __str__(self):
@@ -41,7 +41,7 @@ class ReadingSession(models.Model):
     book = models.ForeignKey(Book, models.CASCADE)
     end_date = models.DateTimeField()
     pages_read = models.IntegerField(blank=True)
-    user = models.ForeignKey(User, models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)
     duration = models.IntegerField()
     start_date = models.DateTimeField()
 
@@ -49,7 +49,7 @@ class ReadingSession(models.Model):
         return f"Reading Session of '{self.book.title}' by {self.user.username}"
 
 class UserBookStat(models.Model):
-    user = models.ForeignKey(User, models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)
     book = models.ForeignKey(Book, models.CASCADE)
     total_reading_time = models.IntegerField(blank=True)
     sessions_count = models.IntegerField(blank=True)
