@@ -1,0 +1,16 @@
+[
+    {
+        "model": "tracker.genre",
+        "pk": 1,
+        "fields": {
+            "genre_name": "Horror"
+        }
+    },
+    {
+        "model": "tracker.genre",
+        "pk": 2,
+        "fields": {
+            "genre_name": "Komedia"
+        }
+    }
+]

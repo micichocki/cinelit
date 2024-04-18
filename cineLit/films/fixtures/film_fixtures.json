@@ -1,0 +1,30 @@
+[
+    {
+        "model": "films.film",
+        "pk": 1,
+        "fields": {
+            "title": "Piraci z Karaibów: Skrzynia umarlaka",
+            "released": "2023-01-01",
+            "poster": null,
+            "genre": 1,
+            "directors": [1],
+            "actors": [1],
+            "length": 120,
+            "plot": "Piraci plot"
+        }
+    },
+    {
+        "model": "films.film",
+        "pk": 2,
+        "fields": {
+            "title": "Zabójczy rejs",
+            "released": "2023-01-02",
+            "poster": null,
+            "genre": 1,
+            "directors": [2],
+            "actors": [2],
+            "length": 150,
+            "plot": "Rejs plot"
+        }
+    }
+]

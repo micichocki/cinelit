@@ -53,9 +53,9 @@ class WatchingSession(models.Model):
 class UserFilmStat(models.Model):
     user = models.ForeignKey(User, models.CASCADE)
     film = models.ForeignKey(Film, models.CASCADE)
-    total_watching_time = models.IntegerField(blank=True, help_text="The number of minutes the user has watched totally")
-    sessions_count = models.IntegerField(blank=True)
-    last_session_end = models.DateTimeField()
+    total_watching_time = models.IntegerField(blank=True, null=True, help_text="The number of minutes the user has watched totally")
+    sessions_count = models.IntegerField(blank=True, null=True)
+    last_session_end = models.DateTimeField(null=True)
 
     def __str__(self):
         return f"User: {self.user.username}, Film: {self.film.title}"
