@@ -1,1 +1,89 @@
-<p>current works!</p>
+<mat-grid-list
+  [cols]="isSmallScreen ? 2 : 4"
+  rowHeight="2:1"
+  fxLayout="row"
+  fxLayout.lt-sm="column"
+  gutterSize="20px"
+>
+  <mat-grid-tile colspan="2" rowspan="1"
+    ><mat-card class="card">
+      <mat-card-content
+        >You are currently reading: Zbrodia i Kara</mat-card-content
+      >
+    </mat-card></mat-grid-tile
+  >
+  <mat-grid-tile colspan="1" rowspan="2">
+    <mat-card class="card bookcover">
+      <img
+        mat-card-image
+        src="https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U"
+        class="card__image"
+      />
+    </mat-card>
+  </mat-grid-tile>
+
+  <mat-grid-tile colspan="1" rowspan="2">
+    <mat-card class="card">
+      <mat-card-header class="card__header"
+        >Your reading progress</mat-card-header
+      >
+      <mat-card-content class="card__content">
+        <mat-progress-bar
+          class="card__progress-bar"
+          mode="determinate"
+          value="40"
+        ></mat-progress-bar>
+        <div class="card__progress-text">
+          <div class="card__progress-percentage">50%</div>
+          <div class="card__progress-value">200/400</div>
+        </div>
+      </mat-card-content>
+      <mat-card-footer class="card__footer">
+        <button mat-raised-button>Continue reading</button>
+      </mat-card-footer>
+    </mat-card>
+  </mat-grid-tile>
+
+  <mat-grid-tile colspan="2" rowspan="3">
+    <mat-card class="card">
+      <mat-card-content class="card__content">
+        <div class="card__label">
+          <p class="card__label-name">Your reading time:</p>
+          <p class="card__label-content">10h</p>
+        </div>
+        <div class="card__label">
+          <p class="card__label-name">Your reading speed:</p>
+          <p class="card__label-content">1 page/min</p>
+        </div>
+        <div class="card__label">
+          <p class="card__label-name">Number of reading sessions</p>
+          <p class="card__label-content">5</p>
+        </div>
+        <div class="card__label">
+          <p class="card__label-name">Reading the same you will finish in:</p>
+          <p class="card__label-content">10h</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+  <mat-grid-tile colspan="2" rowspan="2">
+    <mat-card class="card">
+      <mat-card-title class="card__title"
+        >History of reading sessions</mat-card-title
+      >
+      <mat-card-content class="card__content full-width">
+        <mat-card class="session">
+          <mat-card-content class="session__content">
+            <p class="session__date">22.10.2023</p>
+            <p class="session__time">10:50-11:00</p>
+            <p class="session__duration">10 minutes</p>
+            <p class="session__pages">10 pages</p>
+          </mat-card-content>
+        </mat-card>
+      </mat-card-content>
+      <mat-card-footer class="card__footer">
+        <button mat-raised-button class="card__button">See history</button>
+      </mat-card-footer>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>

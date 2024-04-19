@@ -1,0 +1,34 @@
+:host {
+  mat-grid-list {
+    padding: 2rem;
+    margin-inline: 3rem;
+
+    mat-grid-tile {
+      .card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        background-color: var(--primary);
+        border-radius: 1.2rem;
+        box-shadow: none;
+
+        &__header {
+          // Add any specific styles for the header here
+        }
+
+        &__content {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+        }
+
+        &__footer {
+          // Add any specific styles for the footer here
+        }
+      }
+    }
+  }
+}

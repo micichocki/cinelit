@@ -1,0 +1,107 @@
+:host {
+  .full-width {
+    width: 100%;
+  }
+
+  mat-grid-list {
+    padding: 2rem;
+    margin-inline: 3rem;
+
+    mat-grid-tile {
+      .bookcover {
+        background: none !important;
+      }
+
+      .card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        background-color: var(--primary);
+        border-radius: 1.2rem;
+        box-shadow: none;
+
+        &__header {
+          // Add any specific styles for the header here
+        }
+
+        &__image {
+          height: 100%;
+        }
+
+        &__content {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+        }
+
+        &__progress-bar {
+          // Add any specific styles for the progress bar here
+        }
+
+        &__progress-text {
+          display: flex;
+          justify-content: space-between;
+        }
+
+        &__progress-percentage {
+          text-align: left;
+        }
+
+        &__progress-value {
+          text-align: right;
+        }
+
+        &__footer {
+          // Add any specific styles for the footer here
+        }
+
+        &__label {
+          display: flex;
+          justify-content: space-between;
+        }
+
+        &__label-name {
+          // Add any specific styles for the label name here
+        }
+
+        &__label-content {
+          // Add any specific styles for the label content here
+        }
+      }
+
+      .session {
+        background-color: var(--accent);
+        margin: 0;
+
+        &__content {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+
+          & > p {
+            width: 50%; // This makes each p element take up half the width of the session__content
+          }
+
+          .session__date {
+            text-align: left;
+          }
+
+          .session__time {
+            text-align: right;
+          }
+
+          .session__duration {
+            text-align: left;
+          }
+
+          .session__pages {
+            text-align: right;
+          }
+        }
+      }
+    }
+  }
+}
