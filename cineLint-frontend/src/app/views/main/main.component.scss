@@ -1,6 +1,6 @@
 :host {
     background-color: var(--primary-2);
-    height: 100vh;
+    min-height: 100vh;
     display: block;
     nav {
         display: flex;
@@ -11,6 +11,7 @@
         font-size: 24px;
         font-weight: 500;
         height: 5rem;
+        color: var(--primary-2);
 
         a {
             all: unset;

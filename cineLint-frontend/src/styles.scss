@@ -8,7 +8,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 :root {
-    --primary: #F9C784;
-    --primary-2: #FFF8E1;
-    --accent: #FF8C42;
+    --primary: #36b3b8;
+    --primary-2: #f6f6f6;
+    --accent: #36c08f;
 }
+
+.dialog {
+    .mat-mdc-dialog-container .mdc-dialog__surface {
+      background-color: var(--primary);
+    }
+  }
