@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .models import Genre
-from .serializers import UserSerializer, GenreSerializer, UserLoginSerializer
+from .serializers import UserSerializer, GenreSerializer, UserLoginSerializer, UserRegisterSerializer
 
 User = get_user_model()
 
@@ -29,7 +29,7 @@ class GenreViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
 
-@swagger_auto_schema(method='post', request_body=UserSerializer)
+@swagger_auto_schema(method='post', request_body=UserRegisterSerializer)
 @api_view(['POST'])
 def register(request):
     serializer = UserSerializer(data=request.data)
