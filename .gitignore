@@ -6,5 +6,3 @@ cineLit/pyvenv.cfg
 cineLit/Lib/
 cineLit/Scripts/
 cineLit/__pycache__/
-node_modules
-.vscode
