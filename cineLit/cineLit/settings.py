@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'films',
     'books',
     'tracker',
-    'rest_framework'
+    'rest_framework',
+    'rest_framework_swagger'
 ]
 
 MIDDLEWARE = [
