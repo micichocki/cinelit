@@ -1,0 +1,15 @@
+<button
+    [ngClass]="{
+        'icon-button' : iconButton,
+        'small': size === 'small', 
+        'medium': size === 'medium', 
+        'big': size === 'big', 
+        'error': style === 'error',
+        'accent': style === 'accent',
+        'primary': style === 'primary',
+    }"
+    (click)="outClick.emit()"
+    [disabled]="disabled"
+>
+    <span *ngIf="!iconButton">{{ title }}</span>
+</button>
