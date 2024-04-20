@@ -11,6 +11,12 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'email', 'first_name', 'last_name', 'books', 'films']
 
 
+class UserLoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'password']
+
+
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
