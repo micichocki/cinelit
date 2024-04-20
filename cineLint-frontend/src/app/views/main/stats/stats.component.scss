@@ -1,4 +1,12 @@
 :host {
+  header {
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    padding: 2rem;
+    justify-content: space-between;
+  }
+
   mat-grid-list {
     padding: 2rem;
     margin-inline: 3rem;

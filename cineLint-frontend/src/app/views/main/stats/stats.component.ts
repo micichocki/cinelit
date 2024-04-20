@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MainStoreService } from '../store/main-store.service';
+import { ApplicationMode, MainStoreService } from '../store/main-store.service';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { Color, NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
+import { SwitchComponent } from '../components/switch/switch.component';
 
 @Component({
   selector: 'app-stats',
@@ -22,6 +23,7 @@ import { Color, NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
     MatDividerModule,
     MatIconModule,
     NgxChartsModule,
+    SwitchComponent
   ],
   templateUrl: './stats.component.html',
   styleUrl: './stats.component.scss',
@@ -29,9 +31,13 @@ import { Color, NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
 export class StatsComponent {
   isSmallScreen = false;
 
+  title = ''
+
+  mode: ApplicationMode = 'Books';
+
   constructor(
+    breakpointObserver: BreakpointObserver,
     private store: MainStoreService,
-    breakpointObserver: BreakpointObserver
   ) {
     breakpointObserver
       .observe([Breakpoints.XSmall, Breakpoints.Tablet])
@@ -41,8 +47,18 @@ export class StatsComponent {
   }
 
   ngOnInit() {
-    this.store.setCurrentSubpage('Stats');
-  }
+  this.store.setCurrentSubpage('Stats');
+
+  this.store.mode$.subscribe((mode) => this.changeModeCallback(mode))
+}
+
+private changeModeCallback(mode: ApplicationMode) {
+  this.mode = mode;
+
+  this.title = this.mode === 'Books'
+    ? 'Reading statistics'
+    : 'Watching statistics'
+}
 
   // MOCD DATA FOR THE CHART
   bookData: any[] = [
