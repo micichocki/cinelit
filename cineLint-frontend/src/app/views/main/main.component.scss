@@ -13,30 +13,30 @@
         height: 5rem;
         color: var(--primary-2);
 
-        a {
-            all: unset;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            cursor: pointer;
+    a {
+      all: unset;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      cursor: pointer;
 
-            &.active {
-                font-weight: bold;
-                transform: scale(1.02);
-            }
+      &.active {
+        font-weight: bold;
+        transform: scale(1.02);
+      }
 
-            &.nav-avatar {
-                width: 3rem;
-                height: 3rem;
-                background-color: var(--accent);
-                border-radius: 50%;
-                display: inline-block;
+      &.nav-avatar {
+        width: 3rem;
+        height: 3rem;
+        background-color: var(--accent);
+        border-radius: 50%;
+        display: inline-block;
 
-                img {
-                    max-width: 100%;
-                }
-            }
+        img {
+          max-width: 100%;
         }
+      }
     }
+  }
 }

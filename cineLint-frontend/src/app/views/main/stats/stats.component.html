@@ -1,1 +1,58 @@
-<p>stats works!</p>
+<header>
+  {{ title }}
+  <app-switch></app-switch>
+  
+</header>
+<mat-grid-list
+  [cols]="isSmallScreen ? 2 : 4"
+  rowHeight="2:1"
+  fxLayout="row"
+  gutterSize="20px"
+>
+  <mat-grid-tile colspan="2" rowspan="2">
+    <ngx-charts-bar-vertical
+      [scheme]="colorScheme"
+      [results]="bookData"
+      [gradient]="false"
+      [xAxis]="true"
+      [yAxis]="true"
+      [legend]="false"
+      [showXAxisLabel]="true"
+      [showYAxisLabel]="true"
+      xAxisLabel="Year"
+      yAxisLabel="Books Read"
+    >
+    </ngx-charts-bar-vertical>
+  </mat-grid-tile>
+  <mat-grid-tile colspan="1" rowspan="2">
+    <mat-card class="card">
+      <mat-card-header class="card__header">Your reading speed</mat-card-header>
+      <mat-card-content class="card__content"> 1 </mat-card-content>
+      <mat-card-footer class="card__footer"> page/min </mat-card-footer>
+    </mat-card>
+  </mat-grid-tile>
+
+  <mat-grid-tile colspan="1" rowspan="2">
+    <mat-card class="card">
+      <mat-card-header class="card__header">You read</mat-card-header>
+      <mat-card-content class="card__content"> 30 </mat-card-content>
+      <mat-card-footer class="card__footer"> books so far </mat-card-footer>
+    </mat-card>
+  </mat-grid-tile>
+
+  <mat-grid-tile [colspan]="isSmallScreen ? 2 : 4" rowspan="2">
+    <ngx-charts-bar-vertical
+      [scheme]="colorScheme"
+      [results]="bookDataYear"
+      [gradient]="false"
+      [xAxis]="true"
+      [yAxis]="true"
+      [legend]="false"
+      [showXAxisLabel]="true"
+      [showYAxisLabel]="true"
+      xAxisLabel="Month"
+      yAxisLabel="Books Read"
+    >
+    </ngx-charts-bar-vertical>
+  </mat-grid-tile>
+</mat-grid-list>
