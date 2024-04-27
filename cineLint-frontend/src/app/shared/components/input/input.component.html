@@ -1,0 +1,13 @@
+<div class="input-container" >
+    <input
+        [type]="type"
+        [placeholder]="placeholder"
+        [value]="value"
+        [formControl]="control"
+        [ngClass]="{'error': control.invalid && control.touched}"
+    />
+    <div *ngIf="control.invalid && control.touched" class="error-message">
+        <span *ngIf="control.hasError('required')">This field is required</span>
+        <span *ngIf="control.hasError('email')">Invalid email</span>
+    </div>
+</div>

@@ -11,7 +11,7 @@ export interface CollectionResponse {
   providedIn: 'root'
 })
 export class RepositoryService {
-  API_URL = 'https://localhost:8080/ap,i'
+  API_URL = 'https://localhost:8080/api'
 
   constructor(private http: HttpClient) { }
 
@@ -21,6 +21,14 @@ export class RepositoryService {
 
   getAllBooks(): Observable<any> {
     return this.http.get(this.API_URL + '/books');
+  }
+
+  addMovie(movie: any): any {
+    this.http.post(this.API_URL + '/movie/add', movie)
+  }
+
+  addBook(book: any): any {
+    this.http.post(this.API_URL + '/book/add', book)
   }
 
   getCollectionByUserId(userId: number): Observable<CollectionResponse> {
@@ -43,7 +51,7 @@ const collectionResponse = {
     {
       id: 2,
       title: 'The shining',
-      url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMgjXdFvQYm5rrNfmo4PD4ux4d4i_KewKrvadL4ixwtA&s',
+      url: 'https://www.mediarodzina.pl/mrcore/uploads/2018/11/lew_czarownica_i_stara_szafa_okladka_filmowa-1.jpg',
       author: 'Stephen King',
       pages: 150,
       genre: ['Drama', 'Fiction'],
@@ -52,16 +60,7 @@ const collectionResponse = {
     {
       id: 3,
       title: 'The shining',
-      url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMgjXdFvQYm5rrNfmo4PD4ux4d4i_KewKrvadL4ixwtA&s',
-      author: 'Stephen King',
-      pages: 150,
-      genre: ['Drama', 'Fiction'],
-      objectType: 'Book'
-    },
-    {
-      id: 4,
-      title: 'The shining',
-      url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMgjXdFvQYm5rrNfmo4PD4ux4d4i_KewKrvadL4ixwtA&s',
+      url: 'https://m.media-amazon.com/images/I/71jDX01PzaL._AC_UF894,1000_QL80_.jpg',
       author: 'Stephen King',
       pages: 150,
       genre: ['Drama', 'Fiction'],
@@ -69,6 +68,15 @@ const collectionResponse = {
     },
     {
       id: 5,
+      title: 'The shining',
+      url: 'https://m.media-amazon.com/images/I/81nq+ewtkcL._AC_UF894,1000_QL80_.jpg',
+      author: 'Stephen King',
+      pages: 150,
+      genre: ['Drama', 'Fiction'],
+      objectType: 'Book'
+    },
+    {
+      id: 4,
       title: 'The shining',
       url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMgjXdFvQYm5rrNfmo4PD4ux4d4i_KewKrvadL4ixwtA&s',
       author: 'Stephen King',

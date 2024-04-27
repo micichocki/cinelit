@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
@@ -10,5 +10,9 @@ import { RouterLink, RouterOutlet } from '@angular/router';
   styleUrl: './item-view.component.scss'
 })
 export class ItemViewComponent {
+  @HostBinding('className') componentClass: string;
 
+  constructor() {
+    this.componentClass = 'background-filter book-background';
+  }
 }

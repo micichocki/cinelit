@@ -1,0 +1,38 @@
+:host {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+    section {
+        z-index: 1;
+        position: relative;
+        background: var(--primary);
+        border-radius: 15px;
+        padding: 2rem;
+    }
+
+    &.book-background {
+        background: url('https://as2.ftcdn.net/v2/jpg/00/65/70/77/1000_F_65707740_9dy3kO5vd8NsuoN1vAmVuTHr82DvCUvB.jpg')
+    }
+    
+    &.movie-background {
+        background: url('https://as2.ftcdn.net/v2/jpg/00/65/70/77/1000_F_65707740_9dy3kO5vd8NsuoN1vAmVuTHr82DvCUvB.jpg')
+    }
+
+    &.background-filter::after {
+        -webkit-backdrop-filter: blur(5px); /* Use for Safari 9+, Edge 17+ (not a mistake) and iOS Safari 9.2+ */
+        backdrop-filter: blur(5px); /* Supported in all major browsers */
+      
+        content: "";
+        display: block;
+        position: absolute;
+        width: 100%; height: 100%;
+        top: 0;
+      }
+}
+
+
