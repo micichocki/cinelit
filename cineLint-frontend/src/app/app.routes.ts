@@ -8,6 +8,7 @@ import { StatsComponent } from './views/main/stats/stats.component';
 import { SettingsComponent } from './views/main/settings/settings.component';
 import { ItemViewComponent } from './views/item-view/item-view.component';
 import { SessionComponent } from './views/item-view/session/session.component';
+import { AddItemComponent } from './views/item-view/add-item/add-item.component';
 
 export const routes: Routes = [
     {
@@ -42,12 +43,16 @@ export const routes: Routes = [
         component: LoginComponent,
     },
     {
-        path: 'itemView/:id',
+        path: 'item',
         component: ItemViewComponent,
         children: [
             {
                 path: 'session',
                 component: SessionComponent
+            },
+            {
+                path: 'add',
+                component: AddItemComponent
             }
         ]
     },
