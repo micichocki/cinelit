@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
 
 export interface DialogData {
@@ -21,13 +22,15 @@ export class DetailsDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<DetailsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private router: Router
   ) {}
 
   onContinueClick() {
-
+    this.close();
+    this.router.navigate(['/item/session'], { queryParams: { id: this.data.item.id } })
   }
 
-  onCloseClick(): void {
+  close(): void {
     this.dialogRef.close();
   }
 

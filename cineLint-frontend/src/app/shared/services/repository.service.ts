@@ -33,7 +33,7 @@ export class RepositoryService {
 
   getObjectById(id: number): Observable<any> {
     // return this.http.get(this.API_URL + '/repository/' + id);
-    return of(collectionResponse.books[id]);
+    return of(collectionResponse.books[id-1]);
   }
 
   getCollectionByUserId(userId: number): Observable<CollectionResponse> {
