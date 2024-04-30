@@ -1,1 +1,31 @@
-<p>session works!</p>
+<header>
+    @if (item?.objectType === 'Book') {
+        Reading session
+    }
+    @else {
+        Watching session
+    }
+</header>
+<div class="main">
+    <img [src]="item?.url">
+    <div class="details">
+        <app-timer #timer></app-timer>
+    </div>
+</div>
+<app-button  (click)="onContinueClick()" [title]="continueTitle"></app-button>
+<app-button [style]="'primary'" (click)="onStopClick()" [title]="'Stop'" ></app-button>
+<app-button [style]="'primary'" [routerLink]="['/home']" [title]="'Cancel'" ></app-button>
+
+@if(showConfirm) {
+    <div class="confirm">
+        End session
+        @if (item?.objectType === 'Book') {
+            <app-input [type]="'number'" [control]="pagesRead" [placeholder]="'Number of paged you read'"></app-input>
+        }
+        @else {
+            <app-input [type]="'number'" [control]="timestamp" [placeholder]="'Timestamp'"></app-input>
+        }
+        <app-button [style]="'primary'" (click)="saveSession()" [title]="'Save session'"></app-button>
+        <app-button (click)="showConfirm = false" [title]="'Cancel'" ></app-button>
+    </div>
+}

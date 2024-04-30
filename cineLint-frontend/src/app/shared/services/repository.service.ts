@@ -31,9 +31,18 @@ export class RepositoryService {
     this.http.post(this.API_URL + '/book/add', book)
   }
 
+  getObjectById(id: number): Observable<any> {
+    // return this.http.get(this.API_URL + '/repository/' + id);
+    return of(collectionResponse.books[id]);
+  }
+
   getCollectionByUserId(userId: number): Observable<CollectionResponse> {
     // return this.http.get<CollectionResponse>(this.API_URL + '/collection'),;
     return of(collectionResponse)
+  }
+
+  saveSession(session: any): Observable<any> {
+    return this.http.post(this.API_URL + '/session/add', session)
   }
 }
 

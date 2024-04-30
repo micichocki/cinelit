@@ -8,6 +8,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-current',
@@ -20,11 +21,14 @@ import { MatButtonModule } from '@angular/material/button';
     MatButtonModule,
     MatDividerModule,
     MatIconModule,
+    RouterLink
   ],
   templateUrl: './current.component.html',
   styleUrl: './current.component.scss',
 })
 export class CurrentComponent {
+  item: any = { id: 1};
+
   isSmallScreen = false;
 
   constructor(
