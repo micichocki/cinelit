@@ -4,6 +4,8 @@ from films.models import UserFilmStat
 from books.models import UserBookStat
 
 class Command(BaseCommand):
+    # Usage: python manage.py load_fixtures
+    # Description: Loads all fixtures and updates stats
     help = 'Loads all fixtures and updates stats'
 
     def handle(self, *args, **options):
