@@ -8,5 +8,10 @@ section {
         display: flex;
         flex-direction: column;
         gap: 1rem;
+
+        .title-search {
+            display: flex;
+            gap: 0.5rem;
+        }
     }
 }

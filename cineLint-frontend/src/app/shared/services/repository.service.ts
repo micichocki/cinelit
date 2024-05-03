@@ -12,6 +12,7 @@ export interface CollectionResponse {
 })
 export class RepositoryService {
   API_URL = 'https://localhost:8080/api'
+  API_KEY = "1231"
 
   constructor(private http: HttpClient) { }
 
@@ -43,6 +44,22 @@ export class RepositoryService {
 
   saveSession(session: any): Observable<any> {
     return this.http.post(this.API_URL + '/session/add', session)
+  }
+
+  searchMovieByTitle(title: string) {
+    const movie = collectionResponse.movies
+    .find(movie => movie.title.toLocaleLowerCase().includes(title.toLowerCase()))
+    
+    return of(movie);
+    // const titleParts = title.trim().split(' ');
+    // return this.http.get(`http://www.omdbapi.com/?apikey=${this.API_KEY}&t=` + titleParts.join("+"));
+  }
+  searchBookByTitle(title: string) {
+    const book = collectionResponse.books
+    .find(book => book.title.toLocaleLowerCase().includes(title.toLowerCase()))
+    
+    return of({ ...book, genre: book?.genre.join(', ') });
+    // return this.http.get("" + title);
   }
 }
 
