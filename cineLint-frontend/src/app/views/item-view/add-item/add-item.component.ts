@@ -17,7 +17,7 @@ export class AddItemComponent {
   bookForm = new FormGroup({
     title: new FormControl('', Validators.required),
     author: new FormControl('', Validators.required),
-    pages: new FormControl('', Validators.required),
+    pages: new FormControl(0, Validators.required),
     genre: new FormControl('', Validators.required),
   });
 
@@ -62,6 +62,27 @@ export class AddItemComponent {
     }
     else if(this.type === 'movie') {
       this.addMovie(formData);
+    }
+  }
+
+  onSearchClick() {
+    if (this.type === 'book' && this.bookForm.value.title) {
+      this.repositoryService
+        .searchBookByTitle(this.bookForm.value.title)
+        .subscribe(b => { 
+          if (b) {
+            this.bookForm.patchValue(b) 
+          }
+        })
+    }
+    else if (this.movieForm.value.title){
+      this.repositoryService
+      .searchMovieByTitle(this.movieForm.value.title)
+      .subscribe(b => { 
+        if (b) {
+          this.movieForm.patchValue(b) 
+        }
+      })
     }
   }
 

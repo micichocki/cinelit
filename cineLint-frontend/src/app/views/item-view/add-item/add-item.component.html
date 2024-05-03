@@ -5,17 +5,22 @@
     @else {
         <h1>Add a movie</h1>
     }
-    <form>
-        <app-input [type]="'file'" [placeholder]="'Title'"></app-input>
-
+    <form (submit)="$event.preventDefault()">
+        <app-input [type]="'file'" [placeholder]="'file'"></app-input>
         @if(type === 'book') {
-            <app-input [control]="this.bookForm.get('title')"  [placeholder]="'Title'"></app-input>
+            <div class="title-search">
+                <app-input [control]="this.bookForm.get('title')"  [placeholder]="'Title'"></app-input>
+                <app-button  (click)="onSearchClick()" [title]="'Search'"></app-button>
+            </div>
             <app-input [control]="this.bookForm.get('author')" [placeholder]="'Author'"></app-input>
             <app-input [control]="this.bookForm.get('pages')" [placeholder]="'Pages'"></app-input>
             <app-input [control]="this.bookForm.get('genre')" [placeholder]="'Genre'"></app-input>
         }
         @else {
-            <app-input [control]="this.movieForm.get('title')"  [placeholder]="'Title'"></app-input>
+            <div class="title-search">
+                <app-input [control]="this.movieForm.get('title')"  [placeholder]="'Title'"></app-input>
+                <app-button  (click)="onSearchClick()" [title]="'Search'"></app-button>
+            </div>
             <app-input [control]="this.movieForm.get('director')" [placeholder]="'Director'"></app-input>
             <app-input [control]="this.movieForm.get('length')" [placeholder]="'Length'"></app-input>
             <app-input [control]="this.movieForm.get('genre')" [placeholder]="'Genre'"></app-input>
