@@ -1,5 +1,7 @@
 # created by virtualenv automatically
 .idea/
+__pycache__/
+*.py[cod]
 cineLit/venv/
 cineLit/.env
 cineLit/pyvenv.cfg
@@ -9,11 +11,18 @@ cineLit/__pycache__/
 
 cineLit/books/__pycache__/
 cineLit/books/migrations/__pycache__/
+cineLit/books/views/__pycache__/
+cineLit/books/serializers/__pycache__/
 
 cineLit/cineLit/__pycache__/
 
 cineLit/films/__pycache__
-cineLit/films/migrations/__pycache__
+cineLit/films/migrations/__pycache__/
+cineLit/films/views/__pycache__/
+cineLit/films/serializers/__pycache__/
 
 cineLit/tracker/__pycache__
-cineLit/tracker/migrations/__pycache__
+cineLit/tracker/migrations/__pycache__/
+cineLit/tracker/serializers/__pycache__/
+
+cineLit/tracker/management/commands/__pycache__/
