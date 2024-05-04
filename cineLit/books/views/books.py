@@ -2,8 +2,8 @@ from rest_framework import viewsets
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from .models import Author, Book
-from .serializers import AuthorSerializer, BookSerializer, ReadingSessionSerializer
+from books.models import Author, Book
+from books.serializers.books_serializer import AuthorSerializer, BookSerializer
 
 
 class AuthorViewSet(viewsets.ModelViewSet):
@@ -12,14 +12,9 @@ class AuthorViewSet(viewsets.ModelViewSet):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
+
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-
-class ReadingSessionViewSet(viewsets.ModelViewSet):
-    serializer_class = ReadingSessionSerialzier
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
