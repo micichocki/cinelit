@@ -1,0 +1,24 @@
+[
+    {
+        "model": "films.userfilmstat",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "film": 1,
+            "total_watching_time": 0,
+            "sessions_count": 0,
+            "last_session_end": null
+        }
+    },
+    {
+        "model": "films.userfilmstat",
+        "pk": 2,
+        "fields": {
+            "user": 1,
+            "film": 2,
+            "total_watching_time": 0,
+            "sessions_count": 0,
+            "last_session_end": null
+        }
+    }
+]
