@@ -1,24 +1,29 @@
 from django.contrib import admin
 from .models import Film, Director, Actor, WatchingSession, UserFilmStat
 
+
 @admin.register(Film)
 class FilmAdmin(admin.ModelAdmin):
-    list_display = ('title', 'released', 'genre')
+    list_display = ('id', 'title', 'released', 'genre')
     list_filter = ('released', 'genre')
     search_fields = ('title',)
+
 
 @admin.register(Director)
 class DirectorAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name')
 
+
 @admin.register(Actor)
 class ActorAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name')
+
 
 @admin.register(WatchingSession)
 class WatchingSessionAdmin(admin.ModelAdmin):
     list_display = ('user', 'film', 'start_date', 'end_date', 'watching_time')
     list_filter = ('user', 'film', 'start_date', 'end_date')
+
 
 @admin.register(UserFilmStat)
 class UserFilmStatAdmin(admin.ModelAdmin):

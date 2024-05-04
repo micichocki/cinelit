@@ -10,8 +10,8 @@ router.register(r'genres', GenreViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),
-    path('books/', include('books.urls')),
-    path('films/', include('films.urls')),
-    path('register', views.register),
-    path('login', views.login),
+    path('', include('books.urls')),
+    path('', include('films.urls')),
+    path('register/', views.register),
+    path('login/', views.login),
 ]
