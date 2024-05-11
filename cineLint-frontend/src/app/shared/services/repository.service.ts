@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { APIMovie } from '../models/movies';
 
 export interface CollectionResponse {
   books: any[]
@@ -12,7 +13,7 @@ export interface CollectionResponse {
 })
 export class RepositoryService {
   API_URL = 'https://localhost:8080/api'
-  API_KEY = "1231"
+  API_KEY = "b9285cf3"
 
   constructor(private http: HttpClient) { }
 
@@ -46,13 +47,13 @@ export class RepositoryService {
     return this.http.post(this.API_URL + '/session/add', session)
   }
 
-  searchMovieByTitle(title: string) {
-    const movie = collectionResponse.movies
-    .find(movie => movie.title.toLocaleLowerCase().includes(title.toLowerCase()))
+  searchMovieByTitle(title: string): Observable<APIMovie> {
+    // const movie = collectionResponse.movies
+    // .find(movie => movie.title.toLocaleLowerCase().includes(title.toLowerCase()))
     
-    return of(movie);
-    // const titleParts = title.trim().split(' ');
-    // return this.http.get(`http://www.omdbapi.com/?apikey=${this.API_KEY}&t=` + titleParts.join("+"));
+    // return of(movie);
+    const titleParts = title.trim().split(' ');
+    return this.http.get<APIMovie>(`http://www.omdbapi.com/?apikey=${this.API_KEY}&t=` + titleParts.join("+"));
   }
   searchBookByTitle(title: string) {
     const book = collectionResponse.books
