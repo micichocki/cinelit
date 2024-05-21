@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from drf_yasg.utils import swagger_auto_schema
@@ -13,9 +15,11 @@ from rest_framework.exceptions import ValidationError
 
 from .models import Genre
 from books.models import ReadingSession
-from films.models import WatchingSession
+from films.models import WatchingSession, Film
 from .serializers.UserSerializer import UserSerializer, UserLoginSerializer, UserRegisterSerializer
 from .serializers.CollectionSerializer import CollectionSerializer
+from films.serializers.film_stat_serializer import UserFilmStatSerializer
+from books.serializers.user_book_stat_serializer import UserBookStatSerializer
 from books.serializers.books_serializer import BookSerializer
 from films.serializers.films_serializer import FilmSerializer
 from tracker.serializers.GenreSerializer import GenreSerializer
@@ -67,68 +71,67 @@ class BookCollectionViewSet(viewsets.GenericViewSet,
                             mixins.DestroyModelMixin,
                             mixins.CreateModelMixin):
     queryset = User.objects.all()
-    serializer_class = CollectionSerializer
+    serializer_class = BookSerializer
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def retrieve(self, request, id_book, format=None):
-        collection = self.get_object(id_book)
-        if collection is None:
-            return Response({'error': 'Not found'}, status=status.HTTP_404_NOT_FOUND)
-        serializer = CollectionSerializer(collection)
-        return Response(serializer.data)
+    def retrieve(self, request, user_pk, id):
+        user_book_stat = UserBookStat.objects.get(user_id=user_pk, book_id=id)
+        serializer = UserBookStatSerializer(user_book_stat)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def create(self, request, id_book, format=None):
-        collection = self.get_object(id_book)
-        if collection is None:
-            return Response({'error': 'Not found'}, status=status.HTTP_404_NOT_FOUND)
-        serializer = CollectionSerializer(collection, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def destroy(self, request, user_pk, id):
+        user = request.user
+        book = Book.objects.get(id=id)
+        if book is None:
+            return ValidationError(detail='Not found', code=HTTPStatus.NOT_FOUND)
+        user.books.remove(book)
+        return Response(status=status.HTTP_200_OK)
 
-    def destroy(self, request, id_book, format=None):
-        collection = self.get_object(id_book)
-        if collection is None:
-            return ValidationError(detail='Not found', code='not_found')
-        collection.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    @action(detail=True, methods=['post'])
+    def add_to_collection(self, request, user_pk, id):
+        user = get_object_or_404(User, id=user_id)
+        book = get_object_or_404(Book, id=id)
+        user.books.add(book)
+        user.save()
+        serializer = self.get_serializer(book)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class FilmCollectionViewSet(viewsets.GenericViewSet,
                             mixins.RetrieveModelMixin,
                             mixins.DestroyModelMixin,
-                            mixins.CreateModelMixin
+                            mixins.CreateModelMixin,
+
                             ):
     queryset = User.objects.all()
-    serializer_class = CollectionSerializer
+    serializer_class = FilmSerializer
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def retrieve(self, request, id_film, format=None):
-        collection = self.get_object(id_film)
-        if collection is None:
-            return Response({'error': 'Not found'}, status=status.HTTP_404_NOT_FOUND)
-        serializer = CollectionSerializer(collection)
-        return Response(serializer.data)
+    def retrieve(self, request, user_pk, id):
+        user_film_stat = UserFilmStat.objects.get(user_id=user_pk, film_id=id)
+        serializer = UserFilmStatSerializer(user_film_stat)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def create(self, request, id_film, format=None):
-        collection = self.get_object(id_film)
-        if collection is None:
-            return Response({'error': 'Not found'}, status=status.HTTP_404_NOT_FOUND)
-        serializer = CollectionSerializer(collection, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def destroy(self, request, user_pk, id):
+        user = request.user
+        film = Film.objects.get(id=id)
+        if film is None:
+            return ValidationError(detail='Not found', code=HTTPStatus.NOT_FOUND)
+        user.books.remove(film)
+        return Response(status=status.HTTP_200_OK)
 
-    def destroy(self, request, id_film, format=None):
-        collection = self.get_object(id_film)
-        if collection is None:
-            return Response({'error': 'Not found'}, status=status.HTTP_404_NOT_FOUND)
-        collection.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    @action(detail=True, methods=['post'])
+    def add_to_collection(self, request, user_pk, id):
+        user = get_object_or_404(User, id=user_id)
+        film = get_object_or_404(Film, id=id)
+        user.film.add(film)
+        user.save()
+        serializer = self.get_serializer(film)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class GenreViewSet(viewsets.ModelViewSet):
