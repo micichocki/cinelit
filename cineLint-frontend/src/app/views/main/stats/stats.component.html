@@ -1,7 +1,6 @@
 <header>
   {{ title }}
   <app-switch></app-switch>
-  
 </header>
 <mat-grid-list
   [cols]="isSmallScreen ? 2 : 4"
@@ -26,17 +25,29 @@
   </mat-grid-tile>
   <mat-grid-tile colspan="1" rowspan="2">
     <mat-card class="card">
-      <mat-card-header class="card__header">Your reading speed</mat-card-header>
-      <mat-card-content class="card__content"> 1 </mat-card-content>
-      <mat-card-footer class="card__footer"> page/min </mat-card-footer>
+      <mat-card-header class="card__header text-large-bold"
+        >Your reading speed</mat-card-header
+      >
+      <mat-card-content class="card__content text-big-accent">
+        1
+      </mat-card-content>
+      <mat-card-footer class="card__footer text-normal">
+        page/min
+      </mat-card-footer>
     </mat-card>
   </mat-grid-tile>
 
   <mat-grid-tile colspan="1" rowspan="2">
     <mat-card class="card">
-      <mat-card-header class="card__header">You read</mat-card-header>
-      <mat-card-content class="card__content"> 30 </mat-card-content>
-      <mat-card-footer class="card__footer"> books so far </mat-card-footer>
+      <mat-card-header class="card__header text-large-bold"
+        >You read</mat-card-header
+      >
+      <mat-card-content class="card__content text-big-accent">
+        30
+      </mat-card-content>
+      <mat-card-footer class="card__footer text-normal">
+        books so far
+      </mat-card-footer>
     </mat-card>
   </mat-grid-tile>
 

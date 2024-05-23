@@ -11,7 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-current',
+  selector: "app-current",
   standalone: true,
   imports: [
     MatGridListModule,
@@ -23,8 +23,8 @@ import { RouterLink } from '@angular/router';
     MatIconModule,
     RouterLink
   ],
-  templateUrl: './current.component.html',
-  styleUrl: './current.component.scss',
+  templateUrl: "./current.component.html",
+  styleUrl: "./current.component.scss",
 })
 export class CurrentComponent {
   item: any = { id: 1};
@@ -43,6 +43,6 @@ export class CurrentComponent {
   }
 
   ngOnInit() {
-    this.store.setCurrentSubpage('Current');
+    this.store.setCurrentSubpage("Current");
   }
 }

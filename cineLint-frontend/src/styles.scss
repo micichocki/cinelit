@@ -16,13 +16,56 @@ body {
 }
 
 :root {
-    --primary: #36b3b8;
-    --primary-2: #f6f6f6;
-    --accent: #f9d717;
+  --primary: #36b3b8;
+  --primary-2: #f6f6f6;
+  --accent: #f9d717;
+
+  --font-primary: Roboto, "Helvetica Neue", sans-serif;
+  --font-secondary: Georgia, serif;
+  --font-size-normal: 1rem;
+  --font-size-large: 2rem;
+  --line-height-normal: 1.5;
+  --line-height-tight: 1.2;
+}
+
+//TYPOGRAPHY
+.text-normal {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-normal);
+  line-height: var(--line-height-normal);
+}
+
+.text-normal-bold {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-normal);
+  line-height: var(--line-height-normal);
+  font-weight: bold;
+}
+
+.text-large {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-large);
+  line-height: var(--line-height-tight);
+}
+
+.text-large-bold {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-large);
+  line-height: var(--line-height-tight);
+  font-weight: bold;
+}
+
+.text-secondary {
+  font-family: var(--font-secondary);
+}
+
+.text-big-accent {
+  font-size: 10rem;
+  color: var(--accent);
 }
 
 .dialog {
-    .mat-mdc-dialog-container .mdc-dialog__surface {
-      background-color: var(--primary);
-    }
+  .mat-mdc-dialog-container .mdc-dialog__surface {
+    background-color: var(--primary);
   }
+}
