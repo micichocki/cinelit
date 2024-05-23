@@ -26,6 +26,8 @@ from tracker.serializers.GenreSerializer import GenreSerializer
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
+from .serializers.UserSessionSerializer import AddSessionSerializer
+
 User = get_user_model()
 
 
@@ -102,9 +104,7 @@ class BookCollectionViewSet(viewsets.GenericViewSet,
 class FilmCollectionViewSet(viewsets.GenericViewSet,
                             mixins.RetrieveModelMixin,
                             mixins.DestroyModelMixin,
-                            mixins.CreateModelMixin,
-
-                            ):
+                            mixins.CreateModelMixin):
     queryset = User.objects.all()
     serializer_class = FilmSerializer
     authentication_classes = [SessionAuthentication, TokenAuthentication]
@@ -132,6 +132,38 @@ class FilmCollectionViewSet(viewsets.GenericViewSet,
         serializer = self.get_serializer(film)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+@swagger_auto_schema(method='post', request_body=AddSessionSerializer)
+@api_view(['POST'])
+def add_session(request, user_pk):
+    user = get_object_or_404(User, id=user_pk)
+    serializer = AddSessionSerializer(data=request.data)
+    item = request.data.get('item')
+    item_type = item.get('type')
+    item_id = item.get('id')
+    if item_type == 'film':
+        film = get_object_or_404(Film, id=item_id)
+        ws = WatchingSession()
+        ws.user = user
+        ws.film = film
+        ws.start_date = request.data.get('start_date')
+        ws.end_date = request.data.get('end_date')
+        ws.watching_time = request.data.get('watching_time')
+        ws.save()
+    else:
+        book = get_object_or_404(Book, id=item_id)
+        rs = ReadingSession()
+        rs.user = user
+        rs.book = book
+        rs.start_date = request.data.get('start_date')
+        rs.end_date = request.data.get('end_date')
+        rs.duration = request.data.get('duration')
+        rs.pages_read = request.data.get('pages_read')
+        rs.save()
+
+    serializer.is_valid(raise_exception=True)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class GenreViewSet(viewsets.ModelViewSet):
