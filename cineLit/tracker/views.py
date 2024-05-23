@@ -14,8 +14,8 @@ from rest_framework.views import APIView
 from rest_framework.exceptions import ValidationError
 
 from .models import Genre
-from books.models import ReadingSession
-from films.models import WatchingSession, Film
+from books.models import ReadingSession, UserBookStat, Book
+from films.models import WatchingSession, Film, UserFilmStat
 from .serializers.UserSerializer import UserSerializer, UserLoginSerializer, UserRegisterSerializer
 from .serializers.CollectionSerializer import CollectionSerializer
 from films.serializers.film_stat_serializer import UserFilmStatSerializer
@@ -43,8 +43,8 @@ class CollectionViewSet(viewsets.GenericViewSet,
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def list(self, request, pk=None):
-        user = self.get_object()
+    def list(self, request, user_pk=None):
+        user = get_object_or_404(User, pk=user_pk)
         books = user.books.all()
         films = user.films.all()
 
@@ -90,7 +90,7 @@ class BookCollectionViewSet(viewsets.GenericViewSet,
 
     @action(detail=True, methods=['post'])
     def add_to_collection(self, request, user_pk, id):
-        user = get_object_or_404(User, id=user_id)
+        user = get_object_or_404(User, id=user_pk)
         book = get_object_or_404(Book, id=id)
         user.books.add(book)
         user.save()
@@ -115,7 +115,7 @@ class FilmCollectionViewSet(viewsets.GenericViewSet,
         serializer = UserFilmStatSerializer(user_film_stat)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def destroy(self, request, user_pk, id):
+    def destroy(self, request, user_id, id):
         user = request.user
         film = Film.objects.get(id=id)
         if film is None:
@@ -125,7 +125,7 @@ class FilmCollectionViewSet(viewsets.GenericViewSet,
 
     @action(detail=True, methods=['post'])
     def add_to_collection(self, request, user_pk, id):
-        user = get_object_or_404(User, id=user_id)
+        user = get_object_or_404(User, id=user_pk)
         film = get_object_or_404(Film, id=id)
         user.film.add(film)
         user.save()
