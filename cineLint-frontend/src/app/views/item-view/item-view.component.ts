@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Component, HostBinding } from '@angular/core';
+import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-item-view',
@@ -10,5 +10,16 @@ import { RouterLink, RouterOutlet } from '@angular/router';
   styleUrl: './item-view.component.scss'
 })
 export class ItemViewComponent {
+  @HostBinding('className') componentClass: string = 'background-filter book-background';
+
+  constructor(
+    private activatedRoute: ActivatedRoute,
+  ) {
+    this.activatedRoute.queryParams.subscribe(params => {
+      let type = params['type'];
+      const backgroundClass = type === 'book' ? 'book-background' : 'movie-background';
+      this.componentClass = `background-filter ${backgroundClass}`;
+    });
+}
 
 }

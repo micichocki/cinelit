@@ -2,8 +2,8 @@ from rest_framework import viewsets
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from .models import Actor, Director, Film
-from .serializers import ActorSerializer, DirectorSerializer, FilmSerializer
+from films.models import Actor, Director, Film
+from films.serializers.films_serializer import ActorSerializer, DirectorSerializer, FilmSerializer
 
 
 class ActorViewSet(viewsets.ModelViewSet):

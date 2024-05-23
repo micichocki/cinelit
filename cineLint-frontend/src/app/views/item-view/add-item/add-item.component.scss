@@ -1,0 +1,17 @@
+section {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        .title-search {
+            display: flex;
+            gap: 0.5rem;
+        }
+    }
+}

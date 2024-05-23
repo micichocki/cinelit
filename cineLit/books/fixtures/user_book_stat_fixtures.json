@@ -1,0 +1,28 @@
+[
+    {
+        "model": "books.userbookstat",
+        "pk": 1,
+        "fields": {
+            "user": 2,
+            "book": 1,
+            "total_reading_time": 0,
+            "sessions_count": 0,
+            "pages_read_count": 0,
+            "last_session_end": null,
+            "reading_speed": 0
+        }
+    },
+    {
+        "model": "books.userbookstat",
+        "pk": 2,
+        "fields": {
+            "user": 2,
+            "book": 2,
+            "total_reading_time": 0,
+            "sessions_count": 0,
+            "pages_read_count": 0,
+            "last_session_end": null,
+            "reading_speed": 0
+        }
+    }
+]

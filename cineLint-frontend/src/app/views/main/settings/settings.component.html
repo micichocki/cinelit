@@ -1,1 +1,10 @@
-<p>settings works!</p>
+<section class="images">
+    <img class="avatar-img-nav" src="assets/images/avatar-img1.png">
+</section>
+<section class="manage">
+    <h2>Manage Your account</h2>
+    <app-button (outClick)="deleteAccount()" [title]="'Delete account'" [style]="'primary'"></app-button>
+    <app-button (outClick)="logout()" [title]="'Logout'" [style]="'primary'"></app-button>
+    <img src="assets/images/logo.jpg">
+
+</section>

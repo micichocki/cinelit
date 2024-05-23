@@ -39,7 +39,7 @@
         </div>
       </mat-card-content>
       <mat-card-footer class="card__footer">
-        <button mat-raised-button>Continue reading</button>
+        <button mat-raised-button [routerLink]="['/item/session']" [queryParams]="{id: item.id}" >Continue reading</button>
       </mat-card-footer>
     </mat-card>
   </mat-grid-tile>

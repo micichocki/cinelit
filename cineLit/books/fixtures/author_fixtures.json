@@ -1,0 +1,18 @@
+[
+    {
+        "model": "books.author",
+        "pk": 1,
+        "fields": {
+            "first_name": "Adam",
+            "last_name": "Mickiewicz"
+        }
+    },
+    {
+        "model": "books.author",
+        "pk": 2,
+        "fields": {
+            "first_name": "Henryk",
+            "last_name": "Sienkiewicz"
+        }
+    }
+]

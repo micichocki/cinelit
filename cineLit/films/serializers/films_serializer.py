@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from .models import Actor, Director, Film
-from tracker.serializers import GenreSerializer
+from films.models import Actor, Director, Film
+from tracker.serializers.GenreSerializer import GenreSerializer
 
 
 class ActorSerializer(serializers.ModelSerializer):

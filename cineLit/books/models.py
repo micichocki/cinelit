@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from tracker.models import Genre
+from django.db.models import Sum, Max
+from tracker.models import CollectionItem
 
 User = get_user_model()
 
@@ -15,7 +17,8 @@ class Author(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
-class Book(models.Model):
+
+class Book(CollectionItem):
     title = models.CharField(unique=True, max_length=255)
     cover = models.FileField(blank=True, null=True)
     released = models.DateField()
@@ -39,12 +42,13 @@ class ReadingSession(models.Model):
     def __str__(self):
         return f"Reading Session of '{self.book.title}' by {self.user.username}"
 
+
 class UserBookStat(models.Model):
     user = models.ForeignKey(User, models.CASCADE)
     book = models.ForeignKey(Book, models.CASCADE)
-    total_reading_time = models.IntegerField(blank=True)
-    sessions_count = models.IntegerField(blank=True)
-    pages_read_count = models.IntegerField(blank=True)
+    total_reading_time = models.IntegerField(blank=True, null=True)
+    sessions_count = models.IntegerField(blank=True, null=True)
+    pages_read_count = models.IntegerField(blank=True, null=True)
     last_session_end = models.DateTimeField(help_text="Datetime of the end of last reading session", null=True)
     reading_speed = models.DecimalField(max_digits=5, decimal_places=5, help_text='Reading speed in pages per minute')
 
@@ -55,13 +59,17 @@ class UserBookStat(models.Model):
         unique_together = (('user', 'book'),)
 
     def update_stats(self):
-        total_time = ReadingSession.objects.filter(user=self.user, book=self.book).aggregate(total_time=Sum('reading_time'))['total_time']
+        total_time = \
+            ReadingSession.objects.filter(user=self.user, book=self.book).aggregate(total_time=Sum('duration'))[
+                'total_time']
         self.total_reading_time = total_time if total_time else 0
 
         sessions_count = ReadingSession.objects.filter(user=self.user, book=self.book).count()
         self.sessions_count = sessions_count
 
-        pages_read_count = ReadingSession.objects.filter(user=self.user, book=self.book).aggregate(pages_read_count=Sum('pages_read'))['pages_read_count']
+        pages_read_count = \
+            ReadingSession.objects.filter(user=self.user, book=self.book).aggregate(pages_read_count=Sum('pages_read'))[
+                'pages_read_count']
         self.pages_read_count = pages_read_count if pages_read_count else 0
 
         last_session = ReadingSession.objects.filter(user=self.user, book=self.book).order_by('-end_date').first()
