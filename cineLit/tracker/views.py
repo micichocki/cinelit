@@ -4,28 +4,26 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status, viewsets, mixins
-from rest_framework.decorators import action
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.authtoken.models import Token
+from rest_framework.decorators import action
 from rest_framework.decorators import api_view
+from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.exceptions import ValidationError
 
-from .models import Genre
 from books.models import ReadingSession, UserBookStat, Book
-from films.models import WatchingSession, Film, UserFilmStat
-from .serializers.UserSerializer import UserSerializer, UserLoginSerializer, UserRegisterSerializer
-from .serializers.CollectionSerializer import CollectionSerializer
-from films.serializers.film_stat_serializer import UserFilmStatSerializer
-from books.serializers.user_book_stat_serializer import UserBookStatSerializer
 from books.serializers.books_serializer import BookSerializer
+from books.serializers.reading_session_serializer import ReadingSessionSerializer
+from books.serializers.user_book_stat_serializer import UserBookStatSerializer
+from films.models import WatchingSession, Film, UserFilmStat
+from films.serializers.film_stat_serializer import UserFilmStatSerializer
 from films.serializers.films_serializer import FilmSerializer
+from films.serializers.watching_session_serializer import WatchingSessionSerializer
 from tracker.serializers.GenreSerializer import GenreSerializer
-from rest_framework.authentication import SessionAuthentication, TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
-
+from .models import Genre
+from .serializers.CollectionSerializer import CollectionSerializer
+from .serializers.UserSerializer import UserSerializer, UserLoginSerializer, UserRegisterSerializer
 from .serializers.UserSessionSerializer import AddSessionSerializer
 
 User = get_user_model()
@@ -139,31 +137,47 @@ class FilmCollectionViewSet(viewsets.GenericViewSet,
 def add_session(request, user_pk):
     user = get_object_or_404(User, id=user_pk)
     serializer = AddSessionSerializer(data=request.data)
-    item = request.data.get('item')
-    item_type = item.get('type')
-    item_id = item.get('id')
-    if item_type == 'film':
-        film = get_object_or_404(Film, id=item_id)
+    item_id = request.data.get('item_id')
+    film = Film.objects.filter(id=item_id)
+    if film.exists():
         ws = WatchingSession()
         ws.user = user
-        ws.film = film
+        ws.film = film.get()
         ws.start_date = request.data.get('start_date')
         ws.end_date = request.data.get('end_date')
         ws.watching_time = request.data.get('watching_time')
         ws.save()
-    else:
-        book = get_object_or_404(Book, id=item_id)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    book = Book.objects.filter(id=item_id)
+    if book.exists():
         rs = ReadingSession()
         rs.user = user
-        rs.book = book
+        rs.book = book.get()
         rs.start_date = request.data.get('start_date')
         rs.end_date = request.data.get('end_date')
         rs.duration = request.data.get('duration')
         rs.pages_read = request.data.get('pages_read')
         rs.save()
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    serializer.is_valid(raise_exception=True)
-    return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+@api_view(['GET'])
+def get_session(request, user_pk, item_id):
+    user = get_object_or_404(User, id=user_pk)
+    watching_sessions = WatchingSession.objects.filter(user=user, film_id=item_id)
+    if watching_sessions.exists():
+        serializer = WatchingSessionSerializer(watching_sessions, many=True)
+        return Response(serializer.data)
+
+    reading_sessions = ReadingSession.objects.filter(user=user, book_id=item_id)
+    if reading_sessions.exists():
+        serializer = ReadingSessionSerializer(reading_sessions, many=True)
+        return Response(serializer.data)
+
+    return Response({'detail': 'No session found'}, status=404)
 
 
 class GenreViewSet(viewsets.ModelViewSet):
