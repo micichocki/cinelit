@@ -84,7 +84,6 @@ class UserItemStatViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin):
             return get_object_or_404(UserFilmStat, user_id=user_pk, film_id=item_id)
 
     def retrieve(self, request, *args, **kwargs):
-        breakpoint()
         instance = self.get_object()
 
         if isinstance(instance, UserBookStat):

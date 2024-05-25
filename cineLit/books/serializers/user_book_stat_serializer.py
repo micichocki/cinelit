@@ -10,7 +10,7 @@ class UserBookStatSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserBookStat
-        fields = ['user', 'film', 'total_reading_time', 'sessions_count', 'last_session_end', 'book']
+        fields = ['user', 'book', 'total_reading_time', 'sessions_count', 'last_session_end', 'book']
 
     def update(self, instance, validated_data):
         instance.total_watching_time = validated_data.get('total_watching_time', instance.total_watching_time)

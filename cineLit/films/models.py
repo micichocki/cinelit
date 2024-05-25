@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.db.models import Sum, Max
+from django.db.models import Sum
 from tracker.models import Genre
 from tracker.models import CollectionItem
 

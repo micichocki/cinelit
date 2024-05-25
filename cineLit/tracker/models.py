@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db import connection
+from django.db.models import Sum, Avg
 
 
 class User(AbstractUser):
@@ -11,14 +12,18 @@ class User(AbstractUser):
 class UserStat(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     total_reading_time = models.IntegerField(blank=True, null=True)
-    total_sessions_count = models.IntegerField(blank=True, null=True)
+    total_book_sessions_count = models.IntegerField(blank=True, null=True)
+    total_film_sessions_count = models.IntegerField(blank=True, null=True)
     total_pages_read_count = models.IntegerField(blank=True, null=True)
+    total_minutes_watched = models.IntegerField(blank=True, null=True)
     average_reading_speed = models.DecimalField(max_digits=5, decimal_places=5, blank=True, null=True)
 
     def __str__(self):
         return f"User: {self.user.username}"
 
     def update_stats(self):
+        from books.models import UserBookStat
+
         user_book_stats = UserBookStat.objects.filter(user=self.user)
 
         total_reading_time = user_book_stats.aggregate(total_time=Sum('total_reading_time'))['total_time']
@@ -32,6 +37,15 @@ class UserStat(models.Model):
 
         average_reading_speed = user_book_stats.aggregate(average_speed=Avg('reading_speed'))['average_speed']
         self.average_reading_speed = average_reading_speed if average_reading_speed else 0
+
+        from films.models import UserFilmStat
+
+        user_film_stats = UserFilmStat.objects.filter(user=self.user)
+        total_minutes_watched = user_film_stats.aggregate(total_minutes=Sum('total_watching_time'))['total_minutes']
+        self.total_minutes_watched = total_minutes_watched if total_minutes_watched else 0
+
+        total_film_sessions_count = user_film_stats.aggregate(total_sessions=Sum('sessions_count'))['total_sessions']
+        self.total_film_sessions_count = total_film_sessions_count if total_film_sessions_count else 0
 
     def save(self, *args, **kwargs):
         self.update_stats()
