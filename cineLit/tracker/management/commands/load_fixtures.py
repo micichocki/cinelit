@@ -3,6 +3,7 @@ from django.core.management import call_command
 from films.models import UserFilmStat
 from books.models import UserBookStat
 
+
 class Command(BaseCommand):
     # Usage: python manage.py load_fixtures
     # Description: Loads all fixtures and updates stats
@@ -12,7 +13,6 @@ class Command(BaseCommand):
         fixtures = [
             'tracker/fixtures/genre_fixtures',
             'tracker/fixtures/user_fixtures',
-            'films/fixtures/actor_fixtures',
             'films/fixtures/director_fixtures',
             'films/fixtures/film_fixtures',
             'films/fixtures/user_film_stat_fixtures',
