@@ -3,7 +3,8 @@ from rest_framework.routers import DefaultRouter
 from rest_framework_nested.routers import NestedDefaultRouter
 
 from . import views
-from .views import UserViewSet, GenreViewSet, CollectionViewSet, FilmCollectionViewSet, BookCollectionViewSet
+from .views import UserViewSet, GenreViewSet, CollectionViewSet, FilmCollectionViewSet, BookCollectionViewSet, \
+    add_session, get_session
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
@@ -21,4 +22,6 @@ urlpatterns = [
     path('', include('films.urls')),
     path('register/', views.register),
     path('login/', views.login),
+    path('api/users/<int:user_pk>/sessions/', add_session, name='add_session'),
+    path('api/users/<int:user_pk>/sessions/<int:item_id>/', get_session, name='get_session'),
 ]
