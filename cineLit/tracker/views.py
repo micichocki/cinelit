@@ -1,29 +1,26 @@
-from http import HTTPStatus
-
+from books.serializers.user_book_stat_serializer import UserBookStatSerializer
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from drf_yasg.utils import swagger_auto_schema
+from films.serializers.film_stat_serializer import UserFilmStatSerializer
 from rest_framework import status, viewsets, mixins
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import action
 from rest_framework.decorators import api_view
-from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from books.models import ReadingSession, UserBookStat, Book
+from books.models import ReadingSession, Book, UserBookStat
 from books.serializers.books_serializer import BookSerializer
 from books.serializers.reading_session_serializer import ReadingSessionSerializer
-from books.serializers.user_book_stat_serializer import UserBookStatSerializer
 from films.models import WatchingSession, Film, UserFilmStat
-from films.serializers.film_stat_serializer import UserFilmStatSerializer
+
 from films.serializers.films_serializer import FilmSerializer
 from films.serializers.watching_session_serializer import WatchingSessionSerializer
 from tracker.serializers.GenreSerializer import GenreSerializer
-from .models import Genre
+from .models import Genre, UserStat
 from .serializers.CollectionSerializer import CollectionSerializer
-from .serializers.UserSerializer import UserSerializer, UserLoginSerializer, UserRegisterSerializer
+from .serializers.UserSerializer import UserSerializer, UserLoginSerializer, UserRegisterSerializer, UserStatSerializer
 from .serializers.UserSessionSerializer import AddSessionSerializer
 
 User = get_user_model()
@@ -43,7 +40,7 @@ class CollectionViewSet(viewsets.GenericViewSet,
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def list(self, request, user_pk=None):
+    def list(self, request, user_pk=None, *args, **kwargs):
         user = get_object_or_404(User, pk=user_pk)
         books = user.books.all()
         films = user.films.all()
@@ -66,70 +63,47 @@ class CollectionViewSet(viewsets.GenericViewSet,
         return Response({'books': serialized_books, 'films': serialized_films}, status=status.HTTP_200_OK)
 
 
-class BookCollectionViewSet(viewsets.GenericViewSet,
-                            mixins.RetrieveModelMixin,
-                            mixins.DestroyModelMixin,
-                            mixins.CreateModelMixin):
-    queryset = User.objects.all()
-    serializer_class = BookSerializer
+class UserItemStatViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def retrieve(self, request, user_pk, id):
-        user_book_stat = UserBookStat.objects.get(user_id=user_pk, book_id=id)
-        serializer = UserBookStatSerializer(user_book_stat)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            item_id = self.kwargs.get('item_id')
+            if Book.objects.filter(id=item_id).exists():
+                return UserBookStatSerializer
+            else:
+                return UserFilmStatSerializer
 
-    def destroy(self, request, user_pk, id):
-        user = request.user
-        book = Book.objects.get(id=id)
-        if book is None:
-            return ValidationError(detail='Not found', code=HTTPStatus.NOT_FOUND)
-        user.books.remove(book)
-        return Response(status=status.HTTP_200_OK)
+    def get_object(self):
+        user_pk = self.kwargs['user_pk']
+        item_id = self.kwargs['item_id']
+        try:
+            return get_object_or_404(UserBookStat, user_id=user_pk, book_id=item_id)
+        except:
+            return get_object_or_404(UserFilmStat, user_id=user_pk, film_id=item_id)
 
-    @action(detail=True, methods=['post'])
-    def add_to_collection(self, request, user_pk, id):
-        user = get_object_or_404(User, id=user_pk)
-        book = get_object_or_404(Book, id=id)
-        user.books.add(book)
-        user.save()
-        serializer = self.get_serializer(book)
-        serializer.is_valid(raise_exception=True)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    def retrieve(self, request, *args, **kwargs):
+        breakpoint()
+        instance = self.get_object()
+
+        if isinstance(instance, UserBookStat):
+            serializer = UserBookStatSerializer(instance)
+        else:
+            serializer = UserFilmStatSerializer(instance)
+
+        return Response(serializer.data)
 
 
-class FilmCollectionViewSet(viewsets.GenericViewSet,
-                            mixins.RetrieveModelMixin,
-                            mixins.DestroyModelMixin,
-                            mixins.CreateModelMixin):
-    queryset = User.objects.all()
-    serializer_class = FilmSerializer
+class UserStatViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
+    queryset = UserStat.objects.all()
+    serializer_class = UserStatSerializer
 
-    def retrieve(self, request, user_pk, id):
-        user_film_stat = UserFilmStat.objects.get(user_id=user_pk, film_id=id)
-        serializer = UserFilmStatSerializer(user_film_stat)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def destroy(self, request, user_id, id):
-        user = request.user
-        film = Film.objects.get(id=id)
-        if film is None:
-            return ValidationError(detail='Not found', code=HTTPStatus.NOT_FOUND)
-        user.books.remove(film)
-        return Response(status=status.HTTP_200_OK)
-
-    @action(detail=True, methods=['post'])
-    def add_to_collection(self, request, user_pk, id):
-        user = get_object_or_404(User, id=user_pk)
-        film = get_object_or_404(Film, id=id)
-        user.film.add(film)
-        user.save()
-        serializer = self.get_serializer(film)
-        serializer.is_valid(raise_exception=True)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    def get_object(self):
+        user_pk = self.kwargs['user_pk']
+        return get_object_or_404(UserStat, user_id=user_pk)
 
 
 @swagger_auto_schema(method='post', request_body=AddSessionSerializer)

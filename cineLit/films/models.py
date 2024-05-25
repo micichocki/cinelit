@@ -7,18 +7,6 @@ from tracker.models import CollectionItem
 User = get_user_model()
 
 
-class Actor(models.Model):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    description = models.TextField(blank=True)
-
-    class Meta:
-        unique_together = (('first_name', 'last_name'),)
-
-    def __str__(self):
-        return f"{self.first_name} {self.last_name}"
-
-
 class Director(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
@@ -37,7 +25,6 @@ class Film(CollectionItem):
     poster = models.FileField(blank=True, null=True)
     genre = models.ForeignKey(Genre, models.DO_NOTHING)
     directors = models.ManyToManyField('films.Director', related_name='films', blank=True)
-    actors = models.ManyToManyField('Actor', related_name='films', blank=True)
     length = models.IntegerField(help_text="The length of the film in minutes")
     plot = models.TextField(blank=True)
 

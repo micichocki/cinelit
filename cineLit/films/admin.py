@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Film, Director, Actor, WatchingSession, UserFilmStat
+from .models import Film, Director, WatchingSession, UserFilmStat
 
 
 @admin.register(Film)
@@ -11,11 +11,6 @@ class FilmAdmin(admin.ModelAdmin):
 
 @admin.register(Director)
 class DirectorAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name')
-
-
-@admin.register(Actor)
-class ActorAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name')
 
 
