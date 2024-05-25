@@ -12,17 +12,14 @@ class Director(models.Model):
     last_name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
 
-    class Meta:
-        unique_together = (('first_name', 'last_name'),)
-
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
 
 class Film(CollectionItem):
-    title = models.CharField(unique=True, max_length=255)
+    title = models.CharField(max_length=255)
     released = models.DateField()
-    poster = models.FileField(blank=True, null=True)
+    poster = models.CharField(blank=True, null=True)
     genre = models.ForeignKey(Genre, models.DO_NOTHING)
     directors = models.ManyToManyField('films.Director', related_name='films', blank=True)
     length = models.IntegerField(help_text="The length of the film in minutes")

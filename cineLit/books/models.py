@@ -11,16 +11,13 @@ class Author(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
 
-    class Meta:
-        unique_together = (('first_name', 'last_name'),)
-
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
 
 class Book(CollectionItem):
-    title = models.CharField(unique=True, max_length=255)
-    cover = models.FileField(blank=True, null=True)
+    title = models.CharField(max_length=255)
+    cover = models.CharField(blank=True, null=True)
     released = models.DateField()
     genre = models.ForeignKey(Genre, models.DO_NOTHING)
     authors = models.ManyToManyField(Author)
@@ -50,7 +47,7 @@ class UserBookStat(models.Model):
     sessions_count = models.IntegerField(blank=True, null=True)
     pages_read_count = models.IntegerField(blank=True, null=True)
     last_session_end = models.DateTimeField(help_text="Datetime of the end of last reading session", null=True)
-    reading_speed = models.DecimalField(max_digits=5, decimal_places=5, help_text='Reading speed in pages per minute')
+    reading_speed = models.FloatField(help_text='Reading speed in pages per minute')
 
     def __str__(self):
         return f"User: {self.user.username}, Book: {self.book.title}"

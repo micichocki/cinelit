@@ -16,7 +16,7 @@ class UserStat(models.Model):
     total_film_sessions_count = models.IntegerField(blank=True, null=True)
     total_pages_read_count = models.IntegerField(blank=True, null=True)
     total_minutes_watched = models.IntegerField(blank=True, null=True)
-    average_reading_speed = models.DecimalField(max_digits=5, decimal_places=5, blank=True, null=True)
+    average_reading_speed = models.FloatField(blank=True, null=True)
 
     def __str__(self):
         return f"User: {self.user.username}"
@@ -29,8 +29,8 @@ class UserStat(models.Model):
         total_reading_time = user_book_stats.aggregate(total_time=Sum('total_reading_time'))['total_time']
         self.total_reading_time = total_reading_time if total_reading_time else 0
 
-        total_sessions_count = user_book_stats.aggregate(total_sessions=Sum('sessions_count'))['total_sessions']
-        self.total_sessions_count = total_sessions_count if total_sessions_count else 0
+        total_book_sessions_count = user_book_stats.aggregate(total_sessions=Sum('sessions_count'))['total_sessions']
+        self.total_book_sessions_count = total_book_sessions_count if total_book_sessions_count else 0
 
         total_pages_read_count = user_book_stats.aggregate(total_pages=Sum('pages_read_count'))['total_pages']
         self.total_pages_read_count = total_pages_read_count if total_pages_read_count else 0
@@ -53,7 +53,7 @@ class UserStat(models.Model):
 
 
 class Genre(models.Model):
-    genre_name = models.CharField(unique=True, max_length=255)
+    genre_name = models.CharField(max_length=255)
 
     def __str__(self):
         return f"{self.genre_name}"
