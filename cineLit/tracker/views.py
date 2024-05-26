@@ -113,26 +113,86 @@ def add_session(request, user_pk):
     item_id = request.data.get('item_id')
     film = Film.objects.filter(id=item_id)
     if film.exists():
-        ws = WatchingSession()
-        ws.user = user
-        ws.film = film.get()
-        ws.start_date = request.data.get('start_date')
-        ws.end_date = request.data.get('end_date')
-        ws.watching_time = request.data.get('watching_time')
+        film = film.get()
+        ws = WatchingSession(
+            user=user,
+            film=film,
+            start_date=request.data.get('start_date'),
+            end_date=request.data.get('end_date'),
+            watching_time=request.data.get('watching_time')
+        )
         ws.save()
+        ufs = UserFilmStat.objects.filter(user=user, film=film)
+        if ufs.exists():
+            ufs = ufs.get()
+            ufs.update_stats()
+            ufs.save()
+        else:
+            ufs = UserFilmStat(
+                user=user,
+                film=film,
+                total_watching_time=ws.watching_time,
+                sessions_count=1,
+                last_session_end=ws.end_date
+            )
+            ufs.save()
+        us = UserStat.objects.filter(user=user)
+        if us.exists():
+            us = us.get()
+            us.update_stats()
+            us.save()
+        else:
+            us = UserStat(
+                user=user,
+                total_film_sessions_count=1,
+                total_minutes_watched=ws.watching_time,
+            )
+            us.save()
+
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     book = Book.objects.filter(id=item_id)
     if book.exists():
-        rs = ReadingSession()
-        rs.user = user
-        rs.book = book.get()
-        rs.start_date = request.data.get('start_date')
-        rs.end_date = request.data.get('end_date')
-        rs.duration = request.data.get('duration')
-        rs.pages_read = request.data.get('pages_read')
+        book = book.get()
+        rs = ReadingSession(
+            user=user,
+            book=book,
+            start_date=request.data.get('start_date'),
+            end_date=request.data.get('end_date'),
+            duration=request.data.get('duration'),
+            pages_read=request.data.get('pages_read')
+        )
         rs.save()
+        ubs = UserBookStat.objects.filter(user=user, book=book)
+        if ubs.exists():
+            ubs = ubs.get()
+            ubs.update_stats()
+            ubs.save()
+        else:
+            ubs = UserBookStat(
+                user=user,
+                book=book,
+                total_reading_time=rs.duration,
+                sessions_count=1,
+                pages_read_count=rs.pages_read,
+                last_session_end=rs.end_date
+            )
+            ubs.save()
+        us = UserStat.objects.filter(user=user)
+        if us.exists():
+            us = us.get()
+            us.update_stats()
+            us.save()
+        else:
+            us = UserStat(
+                user=user,
+                total_reading_time=rs.duration,
+                total_book_sessions_count=1,
+                total_pages_read_count=rs.pages_read
+            )
+            us.save()
+
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
