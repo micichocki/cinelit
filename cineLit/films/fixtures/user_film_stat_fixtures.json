@@ -20,5 +20,16 @@
             "sessions_count": 0,
             "last_session_end": null
         }
+    },
+    {
+        "model": "films.userfilmstat",
+        "pk": 3,
+        "fields": {
+            "user": 2,
+            "film": 1,
+            "total_watching_time": 0,
+            "sessions_count": 0,
+            "last_session_end": null
+        }
     }
 ]

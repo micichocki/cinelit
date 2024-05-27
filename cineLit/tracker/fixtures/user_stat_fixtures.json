@@ -1,0 +1,16 @@
+[
+    {
+        "model": "tracker.userstat",
+        "pk": 1,
+        "fields": {
+            "user": 1
+        }
+    },
+    {
+        "model": "tracker.userstat",
+        "pk": 2,
+        "fields": {
+            "user": 2
+        }
+    }
+]

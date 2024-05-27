@@ -31,5 +31,16 @@
             "end_date": "2023-01-03T01:00:00Z",
             "watching_time": 30
         }
+    },
+    {
+        "model": "films.watchingsession",
+        "pk": 4,
+        "fields": {
+            "user": 2,
+            "film": 1,
+            "start_date": "2023-01-03T00:00:00Z",
+            "end_date": "2023-01-03T01:00:00Z",
+            "watching_time": 45
+        }
     }
 ]
