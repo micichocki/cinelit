@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 from django.core.management import call_command
 from films.models import UserFilmStat
 from books.models import UserBookStat
+from tracker.models import UserStat
 
 
 class Command(BaseCommand):
@@ -13,6 +14,7 @@ class Command(BaseCommand):
         fixtures = [
             'tracker/fixtures/genre_fixtures',
             'tracker/fixtures/user_fixtures',
+            'tracker/fixtures/user_stat_fixtures',
             'films/fixtures/director_fixtures',
             'films/fixtures/film_fixtures',
             'films/fixtures/user_film_stat_fixtures',
@@ -22,6 +24,7 @@ class Command(BaseCommand):
             'books/fixtures/user_book_stat_fixtures',
             'books/fixtures/reading_session_fixtures'
         ]
+
 
         for fixture in fixtures:
             try:
@@ -37,3 +40,8 @@ class Command(BaseCommand):
         # Update stats for all UserBookStat objects
         for user_book_stat in UserBookStat.objects.all():
             user_book_stat.save()
+
+        # Update stats for all UserStat objects
+        for user_stat in UserStat.objects.all():
+            user_stat.update_stats()
+            user_stat.save()
