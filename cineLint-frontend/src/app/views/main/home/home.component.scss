@@ -62,3 +62,10 @@
         }
     }
 }
+
+@media(max-width: 600px) {
+    :host {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+}

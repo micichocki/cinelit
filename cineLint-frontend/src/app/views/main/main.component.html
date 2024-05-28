@@ -2,7 +2,7 @@
     @for (subpage of subpages; track subpage.name) {
         <a [routerLink]="[subpage.routerLink]" [ngClass]="{'active': currentSubpage && currentSubpage === subpage.name}">
             <mat-icon>{{subpage.icon }}</mat-icon>
-            {{ subpage.name }}
+            <span class="hide-mobile">{{ subpage.name }}</span>
         </a>
     }
     <a [routerLink]="['/settings']" class="nav-avatar">

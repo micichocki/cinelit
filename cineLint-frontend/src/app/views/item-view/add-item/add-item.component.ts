@@ -6,7 +6,8 @@ import { ButtonComponent } from 'src/app/shared/components/button/button.compone
 import { InputComponent } from 'src/app/shared/components/input/input.component';
 import { markFormGroupTouched } from 'src/app/shared/helpers/validation';
 import { APIMovie } from 'src/app/shared/models/movies';
-import { RepositoryService } from 'src/app/shared/services/repository.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { Book, RepositoryService } from 'src/app/shared/services/repository.service';
 
 @Component({
   selector: 'app-add-item',
@@ -17,11 +18,11 @@ import { RepositoryService } from 'src/app/shared/services/repository.service';
 })
 export class AddItemComponent {
   bookForm = new FormGroup({
-    title: new FormControl('', Validators.required),
-    author: new FormControl('', Validators.required),
-    pages: new FormControl(0, Validators.required),
-    genre: new FormControl('', Validators.required),
-    posterUrl: new FormControl('', Validators.required),
+    title: new FormControl<string>('', Validators.required),
+    author: new FormControl<string>('', Validators.required),
+    pages: new FormControl<number>(0, Validators.required),
+    genre: new FormControl<string>('', Validators.required),
+    posterUrl: new FormControl<string>('', Validators.required),
   });
 
   movieForm = new FormGroup({
@@ -39,14 +40,15 @@ export class AddItemComponent {
   type = 'book';
 
   constructor(
-      private activatedRoute: ActivatedRoute,
-      private repositoryService: RepositoryService,
-      private router: Router
-    ) {
+    private activatedRoute: ActivatedRoute,
+    private repositoryService: RepositoryService,
+    private router: Router,
+    private auth: AuthService
+  ) {
     this.activatedRoute.queryParams.subscribe(params => {
-          let type = params['type'];
-          this.type = type;
-      });
+      let type = params['type'];
+      this.type = type;
+    });
   }
 
   onSaveClick() {
@@ -60,11 +62,11 @@ export class AddItemComponent {
     // if (this.file) {
     //   formData.append('file', this.file, this.file.name);
     // }
-    
+
     if (this.type === 'book') {
       this.addBook(formData);
     }
-    else if(this.type === 'movie') {
+    else if (this.type === 'movie') {
       this.addMovie(formData);
     }
   }
@@ -73,31 +75,31 @@ export class AddItemComponent {
     if (this.type === 'book' && this.bookForm.value.title) {
       this.repositoryService
         .searchBookByTitle(this.bookForm.value.title)
-        .subscribe(b => { 
+        .subscribe(b => {
           if (b) {
-            this.bookForm.patchValue(b) 
+            this.bookForm.patchValue(b)
           }
         })
     }
-    else if (this.movieForm.value.title){
+    else if (this.movieForm.value.title) {
       this.repositoryService
-      .searchMovieByTitle(this.movieForm.value.title)
-      .pipe(
-        map((apiMovie: APIMovie) => {
-          return {
-            title: apiMovie.Title,
-            genre: apiMovie.Genre,
-            director: apiMovie.Director,
-            length: apiMovie.Runtime,
-            posterUrl: apiMovie.Poster
+        .searchMovieByTitle(this.movieForm.value.title)
+        .pipe(
+          map((apiMovie: APIMovie) => {
+            return {
+              title: apiMovie.Title,
+              genre: apiMovie.Genre,
+              director: apiMovie.Director,
+              length: apiMovie.Runtime,
+              posterUrl: apiMovie.Poster
+            }
+          })
+        )
+        .subscribe((b) => {
+          if (b) {
+            this.movieForm.patchValue(b)
           }
         })
-      )
-      .subscribe((b) => { 
-        if (b) {
-          this.movieForm.patchValue(b) 
-        }
-      })
     }
   }
 
@@ -110,7 +112,7 @@ export class AddItemComponent {
     }
 
     // formData.append('newItem', JSON.stringify(newMovie));
-    
+
 
     this.repositoryService.addMovie(formData).subscribe({
       next: () => this.router.navigate(['/collection']),
@@ -121,16 +123,21 @@ export class AddItemComponent {
   }
 
   private addBook(formData: FormGroup) {
-    const newBook = {
-      title: this.bookForm.value.title,
-      author: this.bookForm.value.author,
-      pages: this.bookForm.value.pages,
-      genre: this.bookForm.value.genre,
+    const newBook: Book = {
+      title: this.bookForm.value.title as string,
+      authors: [
+        {
+          first_name: this.bookForm.value.author?.split(' ')[0] as string,
+          last_name: this.bookForm.value.author?.split(' ')[0] as string
+        }
+      ],
+      num_of_pages: this.bookForm.value.pages as number,
+      genre: { genre_name: this.bookForm.value.genre as string },
     }
 
     // formData.append('newItem', JSON.stringify(newBook));
 
-    this.repositoryService.addMovie(formData).subscribe({
+    this.repositoryService.addBook(this.auth.userId, newBook).subscribe({
       next: () => this.router.navigate(['/collection']),
       error: (e: any) => {
         console.log(e)
