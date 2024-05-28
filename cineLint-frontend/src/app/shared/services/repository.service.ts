@@ -4,15 +4,33 @@ import { Observable, of } from 'rxjs';
 import { APIMovie } from '../models/movies';
 
 export interface CollectionResponse {
-  books: any[]
+  books: Book[]
   movies: any[]
+}
+
+interface Author {
+  first_name: string;
+  last_name: string;
+}
+
+interface Genre {
+  genre_name: string;
+}
+
+export interface Book {
+  title: string;
+  // released: string; // Use Date if you prefer working with Date objects
+  genre: Genre;
+  authors: Author[];
+  num_of_pages: number;
+  plot?: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class RepositoryService {
-  API_URL = 'https://localhost:8080/api'
+  API_URL = 'http://localhost:8000/api'
   API_KEY = "b9285cf3"
 
   constructor(private http: HttpClient) { }
@@ -26,11 +44,11 @@ export class RepositoryService {
   }
 
   addMovie(movie: any): any {
-    this.http.post(this.API_URL + '/movie/add', movie)
+    return this.http.post(this.API_URL + '/films', movie)
   }
 
-  addBook(book: any): any {
-    this.http.post(this.API_URL + '/book/add', book)
+  addBook(userId: number, book: Book): any {
+    return this.http.post(this.API_URL + '/users'+ userId +'/add', book)
   }
 
   getObjectById(id: number): Observable<any> {
@@ -39,8 +57,8 @@ export class RepositoryService {
   }
 
   getCollectionByUserId(userId: number): Observable<CollectionResponse> {
-    // return this.http.get<CollectionResponse>(this.API_URL + '/collection'),;
-    return of(collectionResponse)
+    return this.http.get<CollectionResponse>(this.API_URL + '/users/'+userId+'/collections');
+    // return of(collectionResponse)
   }
 
   saveSession(session: any): Observable<any> {

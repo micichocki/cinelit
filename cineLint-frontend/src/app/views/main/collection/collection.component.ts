@@ -4,6 +4,7 @@ import { SwitchComponent } from '../components/switch/switch.component';
 import { CollectionResponse, RepositoryService } from 'src/app/shared/services/repository.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DetailsDialogComponent } from '../components/details-dialog/details-dialog.component';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-collection',
@@ -19,8 +20,6 @@ export class CollectionComponent {
 
   repositoryObjects: CollectionResponse | null = null;
 
-  userId = 1;
-
   get selectedRespositoryObjects() { 
     return this.mode === 'Books'
       ? this.repositoryObjects?.books
@@ -30,14 +29,15 @@ export class CollectionComponent {
   constructor(
       private store: MainStoreService,
       private repositoryService: RepositoryService,
-      public dialog: MatDialog
+      public dialog: MatDialog,
+      private auth: AuthService
   ) {}
   ngOnInit() {
     this.store.setCurrentSubpage('Collection');
 
     this.store.mode$.subscribe((mode) => this.changeModeCallback(mode))
 
-    this.repositoryService.getCollectionByUserId(this.userId).subscribe((res) => this.repositoryObjects = res)
+    this.repositoryService.getCollectionByUserId(this.auth.userId).subscribe((res) => this.repositoryObjects = res)
   }
 
   private changeModeCallback(mode: ApplicationMode) {
