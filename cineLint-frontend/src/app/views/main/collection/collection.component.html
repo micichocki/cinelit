@@ -7,7 +7,7 @@
         @for (item of selectedRespositoryObjects; track item.id )
         {
             <div class="item" (click)="openDialog(item)">
-                <img [src]="item.url" [alt]="item.title" class="cover">
+                <img [src]="item.cover" [alt]="item.title" class="cover">
             </div>
         }
     </section>
