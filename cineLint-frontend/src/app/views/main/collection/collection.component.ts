@@ -23,7 +23,7 @@ export class CollectionComponent {
   get selectedRespositoryObjects() { 
     return this.mode === 'Books'
       ? this.repositoryObjects?.books
-      : this.repositoryObjects?.movies
+      : this.repositoryObjects?.films
   }
 
   constructor(

@@ -2,9 +2,10 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
+import { Book, Movie } from 'src/app/shared/services/repository.service';
 
 export interface DialogData {
-  item: any;
+  item: Book | Movie;
 }
 
 @Component({
@@ -17,6 +18,10 @@ export interface DialogData {
 export class DetailsDialogComponent {
   get item() {
     return this.data.item;
+  }
+
+  isBook(item: any):item is Book {
+    return (this.data.item as any).num_of_pages
   }
 
   constructor(
