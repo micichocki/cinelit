@@ -109,6 +109,7 @@ export class AddItemComponent {
       genre: this.movieForm.value.genre,
       director: this.movieForm.value.director,
       length: this.movieForm.value.length,
+      released: '2024-05-29'
     }
 
     // formData.append('newItem', JSON.stringify(newMovie));
@@ -133,6 +134,8 @@ export class AddItemComponent {
       ],
       num_of_pages: this.bookForm.value.pages as number,
       genre: { genre_name: this.bookForm.value.genre as string },
+      released: '2024-05-29',
+      cover: this.bookForm.value.posterUrl as string
     }
 
     // formData.append('newItem', JSON.stringify(newBook));

@@ -19,11 +19,12 @@ interface Genre {
 
 export interface Book {
   title: string;
-  // released: string; // Use Date if you prefer working with Date objects
+  released: string; // Use Date if you prefer working with Date objects
   genre: Genre;
   authors: Author[];
   num_of_pages: number;
   plot?: string;
+  cover: string
 }
 
 @Injectable({
@@ -44,11 +45,11 @@ export class RepositoryService {
   }
 
   addMovie(movie: any): any {
-    return this.http.post(this.API_URL + '/films', movie)
+    return this.http.post(this.API_URL + '/films/', movie)
   }
 
   addBook(userId: number, book: Book): any {
-    return this.http.post(this.API_URL + '/users'+ userId +'/add', book)
+    return this.http.post(this.API_URL + '/books/', book)
   }
 
   getObjectById(id: number): Observable<any> {
