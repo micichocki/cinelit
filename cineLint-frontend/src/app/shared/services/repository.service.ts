@@ -1,11 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpBackend, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, catchError, map, of, switchMap } from 'rxjs';
 import { APIMovie } from '../models/movies';
 
 export interface CollectionResponse {
   books: Book[]
-  movies: any[]
+  films: Movie[]
 }
 
 interface Author {
@@ -18,6 +18,7 @@ interface Genre {
 }
 
 export interface Book {
+  id?: number;
   title: string;
   released: string; // Use Date if you prefer working with Date objects
   genre: Genre;
@@ -27,6 +28,27 @@ export interface Book {
   cover: string
 }
 
+export interface Movie {
+  id?: number;
+  title: string;
+  released: string; // Use Date if you prefer working with Date objects
+  genre: Genre;
+  directors: Author[];
+  length: number;
+  plot?: string;
+  cover: string
+}
+
+export interface Session {
+  id?: number,
+  item_id: number,
+  start_date: string
+  end_date: string,
+  duration?: number,
+  pages_read?: number,
+  watching_time?: number
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -34,45 +56,49 @@ export class RepositoryService {
   API_URL = 'http://localhost:8000/api'
   API_KEY = "b9285cf3"
 
-  constructor(private http: HttpClient) { }
-
-  getAllMovies(): Observable<any> {
-    return this.http.get(this.API_URL + '/movies');
-  }
-
-  getAllBooks(): Observable<any> {
-    return this.http.get(this.API_URL + '/books');
-  }
+  constructor(private http: HttpClient, private httpBackend: HttpBackend) { }
 
   addMovie(movie: any): any {
     return this.http.post(this.API_URL + '/films/', movie)
   }
 
-  addBook(userId: number, book: Book): any {
+  addBook(book: Book): any {
     return this.http.post(this.API_URL + '/books/', book)
   }
 
-  getObjectById(id: number): Observable<any> {
-    // return this.http.get(this.API_URL + '/repository/' + id);
-    return of(collectionResponse.books[id-1]);
+  getObjectById(userId: number, id: number): Observable<Book | Movie> {
+    return this.http.get<Book | Movie>(this.API_URL + '/books/' + id)
+      .pipe(
+        catchError(err => this.http.get(this.API_URL + '/films/' + id).pipe(
+          map((res: any) => { return { ...res, cover: res.poster } as Movie })
+        ))
+      )
   }
 
   getCollectionByUserId(userId: number): Observable<CollectionResponse> {
-    return this.http.get<CollectionResponse>(this.API_URL + '/users/'+userId+'/collections');
+    return this.http.get<CollectionResponse>(this.API_URL + '/users/'+userId+'/collections').pipe(map((res) => {
+      if (res.films) {
+        res.films = res.films.map((film: any) => {
+          return {
+            ...film,
+            cover: film.poster
+          }
+        })
+      }
+      return res;
+    }));
     // return of(collectionResponse)
   }
 
-  saveSession(session: any): Observable<any> {
-    return this.http.post(this.API_URL + '/session/add', session)
+  saveSession(userId: number, session: Session): Observable<any> {
+    return this.http.post(this.API_URL + '/users/' + userId + '/sessions/', session)
   }
 
   searchMovieByTitle(title: string): Observable<APIMovie> {
-    // const movie = collectionResponse.movies
-    // .find(movie => movie.title.toLocaleLowerCase().includes(title.toLowerCase()))
-    
-    // return of(movie);
+    const httpClient = new HttpClient(this.httpBackend);
+
     const titleParts = title.trim().split(' ');
-    return this.http.get<APIMovie>(`http://www.omdbapi.com/?apikey=${this.API_KEY}&t=` + titleParts.join("+"));
+    return httpClient.get<APIMovie>(`http://www.omdbapi.com/?apikey=${this.API_KEY}&t=` + titleParts.join("+"));
   }
   searchBookByTitle(title: string) {
     const book = collectionResponse.books

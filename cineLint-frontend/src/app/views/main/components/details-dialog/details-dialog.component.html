@@ -4,22 +4,22 @@
 <div class="main">
     <img [src]="item.cover">
     <div class="details">
-        @if (item.objectType === 'Book') {
+        @if (isBook(item)) {
             <div class="info">
                 <span>Title: </span>
                 <span>{{ item.title }}</span>
             </div>
             <div class="info">
                 <span>Author: </span>
-                <span>{{ item.author }}</span>
+                <span>{{ item.authors[0].first_name + ' ' + item.authors[0].last_name }}</span>
             </div>
             <div class="info">
                 <span>Pages: </span>
-                <span>{{ item.pages }}</span>
+                <span>{{ item.num_of_pages }}</span>
             </div>
             <div class="info">
                 <span>Genre: </span>
-                <span>{{ item.genre }}</span>
+                <span>{{ item.genre.genre_name }}</span>
             </div>
         }
         @else {
@@ -29,11 +29,11 @@
             </div>
             <div class="info">
                 <span>Director: </span>
-                <span>{{ item.author }}</span>
+                <span>{{ item.directors[0].first_name + ' ' + item.directors[0].last_name  }}</span>
             </div>
             <div class="info">
                 <span>Genre: </span>
-                <span>{{ item.director }}</span>
+                <span>{{ item.genre.genre_name }}</span>
             </div>
         }
     </div>

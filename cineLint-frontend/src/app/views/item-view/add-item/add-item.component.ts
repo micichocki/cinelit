@@ -7,7 +7,7 @@ import { InputComponent } from 'src/app/shared/components/input/input.component'
 import { markFormGroupTouched } from 'src/app/shared/helpers/validation';
 import { APIMovie } from 'src/app/shared/models/movies';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { Book, RepositoryService } from 'src/app/shared/services/repository.service';
+import { Book, Movie, RepositoryService } from 'src/app/shared/services/repository.service';
 
 @Component({
   selector: 'app-add-item',
@@ -29,7 +29,7 @@ export class AddItemComponent {
     title: new FormControl('', Validators.required),
     genre: new FormControl('', Validators.required),
     director: new FormControl('', Validators.required),
-    length: new FormControl('', Validators.required),
+    length: new FormControl<number | null>(null, Validators.required),
     posterUrl: new FormControl('', Validators.required),
   });
 
@@ -90,7 +90,7 @@ export class AddItemComponent {
               title: apiMovie.Title,
               genre: apiMovie.Genre,
               director: apiMovie.Director,
-              length: apiMovie.Runtime,
+              length: Number.parseInt(apiMovie.Runtime),
               posterUrl: apiMovie.Poster
             }
           })
@@ -104,18 +104,24 @@ export class AddItemComponent {
   }
 
   private addMovie(formData: FormGroup) {
-    const newMovie = {
-      title: this.movieForm.value.title,
-      genre: this.movieForm.value.genre,
-      director: this.movieForm.value.director,
-      length: this.movieForm.value.length,
-      released: '2024-05-29'
+    const newMovie: any = {
+      title: this.movieForm.value.title as string,
+      genre: { genre_name: this.movieForm.value.genre as string },
+      directors: [
+        {
+          first_name: this.movieForm.value.director?.split(' ')[0] as string,
+          last_name: this.movieForm.value.director?.split(' ')[0] as string
+        }
+      ],
+      length: this.movieForm.value.length as number,
+      released: '2024-05-29',
+      poster: this.movieForm.value.posterUrl as string
     }
 
     // formData.append('newItem', JSON.stringify(newMovie));
 
 
-    this.repositoryService.addMovie(formData).subscribe({
+    this.repositoryService.addMovie(newMovie).subscribe({
       next: () => this.router.navigate(['/collection']),
       error: (e: any) => {
         console.log(e)
@@ -140,7 +146,7 @@ export class AddItemComponent {
 
     // formData.append('newItem', JSON.stringify(newBook));
 
-    this.repositoryService.addBook(this.auth.userId, newBook).subscribe({
+    this.repositoryService.addBook(newBook).subscribe({
       next: () => this.router.navigate(['/collection']),
       error: (e: any) => {
         console.log(e)
