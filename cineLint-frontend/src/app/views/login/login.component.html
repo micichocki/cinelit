@@ -1,1 +1,46 @@
-<p>login works!</p>
+<div class="loginContainer">
+  <img src="../../../assets/images/logo.jpg" alt="" class="logo" />
+  <h1 class="title">Welcome to CineLint</h1>
+  <p class="subtitle">Sign in to continue</p>
+  <div class="formContainer">
+    <form
+      class="form-container"
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit($event)"
+    >
+      <div class="input-container">
+        <input
+          label="Email"
+          formControlName="email"
+          placeholder="Your Email"
+          type="email"
+        />
+        <div
+          *ngIf="
+            loginForm.controls['password'].invalid &&
+            loginForm.controls['email'].touched
+          "
+          class="error-message"
+        >
+          Please enter a valid email.
+        </div>
+        <input
+          label="Password"
+          [formControlName]="'password'"
+          placeholder="Password"
+          type="password"
+        />
+        <div
+          *ngIf="
+            loginForm.controls['password'].invalid &&
+            loginForm.controls['password'].touched
+          "
+          class="error-message"
+        >
+          Password is required.
+        </div>
+        <button class="btn btn-primary" type="submit">Sign In</button>
+      </div>
+    </form>
+  </div>
+</div>
