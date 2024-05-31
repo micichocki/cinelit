@@ -5,8 +5,7 @@ import { mergeMap } from 'rxjs';
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
 import { InputComponent } from 'src/app/shared/components/input/input.component';
 import { TimerComponent } from 'src/app/shared/components/timer/timer.component';
-import { AuthService } from 'src/app/shared/services/auth.service';
-import { Book, Movie, RepositoryService, Session } from 'src/app/shared/services/repository.service';
+import { RepositoryService } from 'src/app/shared/services/repository.service';
 
 @Component({
   selector: 'app-session',
@@ -17,15 +16,12 @@ import { Book, Movie, RepositoryService, Session } from 'src/app/shared/services
 })
 export class SessionComponent implements OnInit {
   @ViewChild('timer') timer!: TimerComponent;
-  item!: Book | Movie | any;
+  item!: any;
   sessionActive = false;
-  pagesRead = new FormControl<number>(0);
-  timestamp = new FormControl<number>(0);
+  pagesRead = new FormControl(0);
+  timestamp = new FormControl(0);
   mode = 'Book';
   showConfirm = false;
-  startDate: Date | null = null;
-  endDate: Date | null = null;
-
 
   get continueTitle() {
     return this.sessionActive ? 'Pause' : 'Continue'
@@ -34,8 +30,7 @@ export class SessionComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private repositoryService: RepositoryService,
-    private router: Router,
-    private auth: AuthService
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -43,17 +38,15 @@ export class SessionComponent implements OnInit {
       mergeMap((params) => {
         let id = params['id'];
 
-        return this.repositoryService.getObjectById(this.auth.userId, id)
+        return this.repositoryService.getObjectById(id)
       })
-    ).subscribe((object: any) => {
+    ).subscribe(object => {
       this.item = object;
-      this.mode = object.num_of_pages ? 'Book' : 'Movie';
+      this.mode = object.objectType;
     });
   }
 
   onContinueClick() {
-    if (!this.startDate) this.startDate = new Date();
-
     if (this.sessionActive) {
       this.timer.stop();
     }
@@ -70,17 +63,8 @@ export class SessionComponent implements OnInit {
   }
 
   saveSession() {
-    this.endDate = new Date();
+    const session = {}
 
-    const session: Session = {
-      item_id: this.item.id as number,
-      start_date: this.startDate!.toISOString(),
-      end_date: this.endDate!.toISOString(),
-      duration: this.mode === 'Book' ? Math.ceil(this.timer.value / 60) : 0,
-      pages_read: this.pagesRead.value as number,
-      watching_time: this.mode === 'Movie' ? Math.ceil(this.timer.value / 60) : 0
-    }
-
-    this.repositoryService.saveSession(this.auth.userId, session).subscribe(() => this.router.navigate(['/home']));
+    this.repositoryService.saveSession(session).subscribe();
   }
 }

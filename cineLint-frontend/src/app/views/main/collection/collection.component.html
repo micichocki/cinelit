@@ -1,14 +1,17 @@
 <header>
-    {{ title }}
-    <app-switch></app-switch>
+  {{ title }}
+  <app-switch></app-switch>
 </header>
 @if (repositoryObjects) {
-    <section>
-        @for (item of selectedRespositoryObjects; track item.id )
-        {
-            <div class="item" (click)="openDialog(item)">
-                <img [src]="item.cover" [alt]="item.title" class="cover">
-            </div>
-        }
-    </section>
+<section>
+  @for (item of selectedRespositoryObjects; track item.id ) {
+  <div class="item" (click)="openDialog(item)">
+    <img
+      [src]="item.cover ? item.cover : item.poster"
+      [alt]="item.title"
+      class="cover"
+    />
+  </div>
+  }
+</section>
 }
