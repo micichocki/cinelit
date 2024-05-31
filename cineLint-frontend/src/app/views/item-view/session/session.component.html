@@ -1,5 +1,5 @@
 <header>
-    @if (item?.num_of_pages) {
+    @if (item?.objectType === 'Book') {
         Reading session
     }
     @else {
@@ -19,11 +19,11 @@
 @if(showConfirm) {
     <div class="confirm">
         End session
-        @if (item?.num_of_pages) {
+        @if (item?.objectType === 'Book') {
             <app-input [type]="'number'" [control]="pagesRead" [placeholder]="'Number of paged you read'"></app-input>
         }
         @else {
-            <!-- <app-input [type]="'number'" [control]="timestamp" [placeholder]="'Timestamp'"></app-input> -->
+            <app-input [type]="'number'" [control]="timestamp" [placeholder]="'Timestamp'"></app-input>
         }
         <app-button [style]="'primary'" (click)="saveSession()" [title]="'Save session'"></app-button>
         <app-button (click)="showConfirm = false" [title]="'Cancel'" ></app-button>

@@ -1,0 +1,77 @@
+<div class="loginContainer">
+  <img src="../../../assets/images/logo.jpg" alt="" class="logo" />
+  <h1 class="title">Welcome to CineLint</h1>
+  <p class="subtitle">Sign in to continue</p>
+  <div class="formContainer">
+    <form
+      class="form-container"
+      [formGroup]="signupForm"
+      (ngSubmit)="onSubmit()"
+    >
+      <div class="input-container">
+        <input
+          label="Name"
+          formControlName="name"
+          placeholder="Your Name"
+          type="text"
+        />
+        <div
+          *ngIf="
+            signupForm.controls['name'].invalid &&
+            signupForm.controls['name'].touched
+          "
+          class="error-message"
+        >
+          Please enter a valid name.
+        </div>
+        <input
+          label="Email"
+          formControlName="email"
+          placeholder="Your Email"
+          type="email"
+        />
+        <div
+          *ngIf="
+            signupForm.controls['email'].invalid &&
+            signupForm.controls['email'].touched
+          "
+          class="error-message"
+        >
+          Please enter a valid email.
+        </div>
+
+        <input
+          label="Password"
+          formControlName="password"
+          placeholder="Password"
+          type="password"
+        />
+        <div
+          *ngIf="
+            signupForm.controls['password'].invalid &&
+            signupForm.controls['password'].touched
+          "
+          class="error-message"
+        >
+          Password is required.
+        </div>
+        <input
+          label="Confirm Password"
+          formControlName="confirmPassword"
+          placeholder="Confirm Password"
+          type="password"
+        />
+        <div
+          *ngIf="
+            signupForm.controls['confirmPassword'].invalid &&
+            signupForm.controls['confirmPassword'].touched
+          "
+          class="error-message"
+        >
+          Password mismatch.
+        </div>
+        <button class="btn btn-primary" type="submit">Sign In</button>
+      </div>
+    </form>
+  </div>
+</div>

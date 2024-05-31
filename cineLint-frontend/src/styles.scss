@@ -3,6 +3,11 @@
 html,
 body {
   height: 100%;
+  font-size: 16px;
+
+  @media (max-width: 600px) {
+    font-size: 10px;
+  }
 }
 body {
   margin: 0;
@@ -60,7 +65,7 @@ body {
 }
 
 .text-big-accent {
-  font-size: 10rem;
+  font-size: 4rem;
   color: var(--accent);
 }
 
@@ -68,4 +73,10 @@ body {
   .mat-mdc-dialog-container .mdc-dialog__surface {
     background-color: var(--primary);
   }
+}
+
+.prevent-overflow {
+  overflow: auto;
+  word-wrap: break-word;
+  white-space: normal;
 }

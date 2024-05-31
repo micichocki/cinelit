@@ -1,43 +1,49 @@
-<header>
-    Details
-</header>
+<header>Details</header>
 <div class="main">
-    <img [src]="item.cover">
-    <div class="details">
-        @if (isBook(item)) {
-            <div class="info">
-                <span>Title: </span>
-                <span>{{ item.title }}</span>
-            </div>
-            <div class="info">
-                <span>Author: </span>
-                <span>{{ item.authors[0].first_name + ' ' + item.authors[0].last_name }}</span>
-            </div>
-            <div class="info">
-                <span>Pages: </span>
-                <span>{{ item.num_of_pages }}</span>
-            </div>
-            <div class="info">
-                <span>Genre: </span>
-                <span>{{ item.genre.genre_name }}</span>
-            </div>
-        }
-        @else {
-            <div class="info">
-                <span>Title: </span>
-                <span>{{ item.title }}</span>
-            </div>
-            <div class="info">
-                <span>Director: </span>
-                <span>{{ item.directors[0].first_name + ' ' + item.directors[0].last_name  }}</span>
-            </div>
-            <div class="info">
-                <span>Genre: </span>
-                <span>{{ item.genre.genre_name }}</span>
-            </div>
-        }
+  <img [src]="item.cover" />
+  <div class="details">
+    @if (item.objectType === 'Book') {
+    <div class="info">
+      <span>Title: </span>
+      <span>{{ item.title }}</span>
     </div>
+    <div class="info">
+      <span>Author: </span>
+      <span>{{ item.author }}</span>
+    </div>
+    <div class="info">
+      <span>Pages: </span>
+      <span>{{ item.pages }}</span>
+    </div>
+    <div class="info">
+      <span>Genre: </span>
+      <span>{{ item.genre }}</span>
+    </div>
+    } @else {
+    <div class="info">
+      <span>Title: </span>
+      <span>{{ item.title }}</span>
+    </div>
+    <div class="info">
+      <span>Director: </span>
+      <span>{{ item.author }}</span>
+    </div>
+    <div class="info">
+      <span>Genre: </span>
+      <span>{{ item.director }}</span>
+    </div>
+    }
+  </div>
 </div>
-<app-button  (click)="onContinueClick()" [title]="'Continue'"></app-button>
-<app-button [style]="'primary'" (click)="close()" [title]="'Close'" ></app-button>
-<app-button [style]="'primary'" (click)="onDeleteClick()" [title]="'Delete'" ></app-button>
+<!-- TODO przenieść do current wyświetlić te dane -->
+<app-button (click)="onContinueClick()" [title]="'Continue'"></app-button>
+<app-button
+  [style]="'primary'"
+  (click)="close()"
+  [title]="'Close'"
+></app-button>
+<app-button
+  [style]="'primary'"
+  (click)="onDeleteClick()"
+  [title]="'Delete'"
+></app-button>

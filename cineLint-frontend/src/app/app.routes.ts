@@ -1,68 +1,71 @@
-import { Routes } from '@angular/router';
-import { MainComponent } from './views/main/main.component';
-import { LoginComponent } from './views/login/login.component';
-import { HomeComponent } from './views/main/home/home.component';
-import { CurrentComponent } from './views/main/current/current.component';
-import { CollectionComponent } from './views/main/collection/collection.component';
-import { StatsComponent } from './views/main/stats/stats.component';
-import { SettingsComponent } from './views/main/settings/settings.component';
-import { ItemViewComponent } from './views/item-view/item-view.component';
-import { SessionComponent } from './views/item-view/session/session.component';
-import { AddItemComponent } from './views/item-view/add-item/add-item.component';
+import { Routes } from "@angular/router";
+import { MainComponent } from "./views/main/main.component";
+import { LoginComponent } from "./views/login/login.component";
+import { HomeComponent } from "./views/main/home/home.component";
+import { CurrentComponent } from "./views/main/current/current.component";
+import { CollectionComponent } from "./views/main/collection/collection.component";
+import { StatsComponent } from "./views/main/stats/stats.component";
+import { SettingsComponent } from "./views/main/settings/settings.component";
+import { ItemViewComponent } from "./views/item-view/item-view.component";
+import { SessionComponent } from "./views/item-view/session/session.component";
+import { AddItemComponent } from "./views/item-view/add-item/add-item.component";
+import { SignupFormComponent } from "./views/signup/signup.component";
 
 export const routes: Routes = [
-    {
-        path: '',
-        component: MainComponent,
-        children: [
-            {
-                path: 'home',
-                component: HomeComponent
-            },
-            {
-                path: 'current',
-                component: CurrentComponent
-            },
-            {
-                path: 'collection',
-                component: CollectionComponent
-            },
-            {
-                path: 'stats',
-                component: StatsComponent
-            },
-            {
-                path: 'settings',
-                component: SettingsComponent
-            }
-        ],
-        canActivate: [() => true]
-    },
-    {
-        path: 'login',
-        component: LoginComponent,
-    },
-    {
-        path: 'item',
-        component: ItemViewComponent,
-        children: [
-            {
-                path: 'session',
-                component: SessionComponent
-            },
-            {
-                path: 'add',
-                component: AddItemComponent
-            }
-        ]
-    },
-    {
-        path: '**',
-        redirectTo: ''
-    }
+  {
+    path: "",
+    component: MainComponent,
+    children: [
+      {
+        path: "home",
+        component: HomeComponent,
+      },
+      {
+        path: "current",
+        component: CurrentComponent,
+      },
+      {
+        path: "collection",
+        component: CollectionComponent,
+      },
+      {
+        path: "stats",
+        component: StatsComponent,
+      },
+      {
+        path: "settings",
+        component: SettingsComponent,
+      },
+    ],
+    canActivate: [() => true],
+  },
+  {
+    path: "login",
+    component: LoginComponent,
+  },
+  {
+    path: "signup",
+    component: SignupFormComponent,
+  },
+  {
+    path: "item",
+    component: ItemViewComponent,
+    children: [
+      {
+        path: "session",
+        component: SessionComponent,
+      },
+      {
+        path: "add",
+        component: AddItemComponent,
+      },
+    ],
+  },
+  {
+    path: "**",
+    redirectTo: "",
+  },
 ];
-
-
 
 // Routing::get('signup', 'SecurityController');
 // Routing::get('login', 'SecurityController');

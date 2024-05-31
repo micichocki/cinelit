@@ -9,7 +9,7 @@
 
   mat-grid-list {
     padding: 2rem;
-    margin-inline: 3rem;
+    margin-inline: 1rem;
 
     mat-grid-tile {
       .card {
@@ -23,19 +23,11 @@
         border-radius: 1.2rem;
         box-shadow: none;
 
-        &__header {
-          // Add any specific styles for the header here
-        }
-
         &__content {
           width: 100%;
           display: flex;
           flex-direction: column;
           text-align: center;
-        }
-
-        &__footer {
-          // Add any specific styles for the footer here
         }
       }
     }
