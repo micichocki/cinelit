@@ -1,11 +1,11 @@
 :host {
-  .full-width {
-    width: 100%;
-  }
-
   mat-grid-list {
     padding: 2rem;
     margin-inline: 3rem;
+
+    @media (max-width: 600px) {
+      margin-inline: 0;
+    }
 
     mat-grid-tile {
       .bookcover {
@@ -23,10 +23,6 @@
         border-radius: 1.2rem;
         box-shadow: none;
 
-        &__header {
-          // Add any specific styles for the header here
-        }
-
         &__image {
           height: 100%;
         }
@@ -35,10 +31,6 @@
           width: 100%;
           display: flex;
           flex-direction: column;
-        }
-
-        &__progress-bar {
-          // Add any specific styles for the progress bar here
         }
 
         &__progress-text {
@@ -54,27 +46,28 @@
           text-align: right;
         }
 
-        &__footer {
-          // Add any specific styles for the footer here
-        }
-
         &__label {
           display: flex;
           justify-content: space-between;
         }
 
-        &__label-name {
-          // Add any specific styles for the label name here
+        &__button {
+          &:hover {
+            background-color: var(--primary-dark);
+          }
         }
+      }
 
-        &__label-content {
-          // Add any specific styles for the label content here
-        }
+      .sessions-container {
+        overflow: auto;
+        max-height: 500px;
       }
 
       .session {
         background-color: var(--accent);
-        margin: 0;
+        margin: 1rem;
+        padding: 1rem;
+        border: 1px solid var(--primary-dark);
 
         &__content {
           display: flex;
@@ -82,7 +75,7 @@
           justify-content: space-between;
 
           & > p {
-            width: 50%; // This makes each p element take up half the width of the session__content
+            width: 50%;
           }
 
           .session__date {
@@ -104,4 +97,10 @@
       }
     }
   }
+}
+
+.card__content.text-big-accent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

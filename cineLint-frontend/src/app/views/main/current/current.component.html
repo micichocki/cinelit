@@ -3,87 +3,119 @@
   rowHeight="2:1"
   fxLayout="row"
   fxLayout.lt-sm="column"
-  gutterSize="20px"
+  [gutterSize]="isSmallScreen ? '10px' : '20px'"
 >
-  <mat-grid-tile colspan="2" rowspan="1"
-    ><mat-card class="card text-large-bold">
-      <mat-card-content
-        >You are currently reading: Zbrodia i Kara</mat-card-content
-      >
-    </mat-card></mat-grid-tile
-  >
+  <mat-grid-tile colspan="2" rowspan="1">
+    <mat-card class="card text-large-bold">
+      <mat-card-content>
+        You are currently on: {{ item?.title | uppercase }}
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+
   <mat-grid-tile colspan="1" rowspan="2">
     <mat-card class="card bookcover">
-      <img
-        mat-card-image
-        src="https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U"
-        class="card__image"
-      />
+      <img mat-card-image [src]="item?.cover" class="card__image" />
     </mat-card>
   </mat-grid-tile>
 
   <mat-grid-tile colspan="1" rowspan="2">
     <mat-card class="card">
       <mat-card-header class="card__header text-large-bold"
-        >Your reading progress</mat-card-header
+        >Your progress</mat-card-header
       >
-      <mat-card-content class="card__content text-normal-bold">
+      <mat-card-content
+        class="card__content text-normal-bold"
+        *ngIf="mode === 'book'"
+      >
         <mat-progress-bar
           class="card__progress-bar"
           mode="determinate"
-          value="40"
+          [value]="(overallReadPages / item?.num_of_pages) * 100"
         ></mat-progress-bar>
         <div class="card__progress-text">
-          <div class="card__progress-percentage">50%</div>
-          <div class="card__progress-value">200/400</div>
+          <div class="card__progress-percentage">
+            {{ (overallReadPages / item?.num_of_pages) * 100 }}%
+          </div>
+          <div class="card__progress-value">
+            {{ overallReadPages }}/{{ item?.num_of_pages }}
+          </div>
         </div>
       </mat-card-content>
+
+      <mat-card-content
+        class="card__content text-big-accent"
+        *ngIf="mode !== 'book'"
+      >
+        {{ totalWatchTime }}
+      </mat-card-content>
+
       <mat-card-footer class="card__footer">
-        <button mat-raised-button [routerLink]="['/item/session']" [queryParams]="{id: item.id}" >Continue reading</button>
+        <button
+          mat-raised-button
+          [routerLink]="['/item/session']"
+          [queryParams]="{ id: item.id }"
+        >
+          Continue reading
+        </button>
       </mat-card-footer>
     </mat-card>
   </mat-grid-tile>
 
-  <mat-grid-tile colspan="2" rowspan="3">
+  <mat-grid-tile colspan="2" rowspan="3" *ngIf="mode === 'book'">
     <mat-card class="card">
       <mat-card-content class="card__content">
         <div class="card__label">
           <p class="card__label-name text-normal-bold">Your reading time:</p>
-          <p class="card__label-content text-normal">10h</p>
+          <p class="card__label-content text-normal">
+            {{ overallReadingTime }} min
+          </p>
         </div>
         <div class="card__label">
           <p class="card__label-name text-normal-bold">Your reading speed:</p>
-          <p class="card__label-content text-normal">1 page/min</p>
+          <p class="card__label-content text-normal">
+            {{ readingSpeed }} page/min
+          </p>
         </div>
         <div class="card__label">
           <p class="card__label-name text-normal-bold">
             Number of reading sessions
           </p>
-          <p class="card__label-content text-normal">5</p>
+          <p class="card__label-content text-normal">{{ numberOfSessions }}</p>
         </div>
         <div class="card__label">
           <p class="card__label-name text-normal-bold">
             Reading the same you will finish in:
           </p>
-          <p class="card__label-content text-normal">10h</p>
+          <p class="card__label-content text-normal">
+            {{ estimatedTimeToFinish }} min
+          </p>
         </div>
       </mat-card-content>
     </mat-card>
   </mat-grid-tile>
+
   <mat-grid-tile colspan="2" rowspan="2">
     <mat-card class="card">
       <mat-card-header class="card__title text-large-bold"
         >History of reading sessions</mat-card-header
       >
-      <mat-card-content class="card__content full-width">
+      <mat-card-content class="card__content full-width sessions-container">
+        @for (session of sessions; track $index) {
         <mat-card class="session">
           <mat-card-content class="session__content text-normal-bold">
-            <p class="session__date">22.10.2023</p>
-            <p class="session__time">10:50-11:00</p>
-            <p class="session__duration">10 minutes</p>
-            <p class="session__pages">10 pages</p>
+            <p class="session__date">
+              {{ session.start_date | date : "dd, MMMM, y, HH:mm" }}
+            </p>
+            <p class="session__duration">
+              {{ session.duration }}{{ session.watching_time }} minutes
+            </p>
+            @if (mode==='book') {
+            <p class="session__pages">{{ session.pages_read }} pages</p>
+            }
           </mat-card-content>
         </mat-card>
+        }
       </mat-card-content>
       <mat-card-footer class="card__footer">
         <button mat-raised-button class="card__button">See history</button>

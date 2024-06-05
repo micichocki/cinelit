@@ -8,6 +8,7 @@
   fxLayout="row"
   gutterSize="20px"
 >
+  @if(mode=='Books'){
   <mat-grid-tile colspan="2" rowspan="2">
     <ngx-charts-bar-vertical
       [scheme]="colorScheme"
@@ -23,13 +24,31 @@
     >
     </ngx-charts-bar-vertical>
   </mat-grid-tile>
+  }@else {
+  <mat-grid-tile colspan="2" rowspan="2">
+    <ngx-charts-bar-vertical
+      [scheme]="colorScheme"
+      [results]="movieData"
+      [gradient]="false"
+      [xAxis]="true"
+      [yAxis]="true"
+      [legend]="false"
+      [showXAxisLabel]="true"
+      [showYAxisLabel]="true"
+      xAxisLabel="Year"
+      yAxisLabel="Movies Watched"
+    >
+    </ngx-charts-bar-vertical>
+  </mat-grid-tile>
+  } @if(mode=='Books'){
+
   <mat-grid-tile colspan="1" rowspan="2">
-    <mat-card class="card">
-      <mat-card-header class="card__header text-large-bold"
+    <mat-card class="card prevent-overflow">
+      <mat-card-header class="card__header text-normal-bold"
         >Your reading speed</mat-card-header
       >
       <mat-card-content class="card__content text-big-accent">
-        1
+        {{ averageReadingSpeed }}
       </mat-card-content>
       <mat-card-footer class="card__footer text-normal">
         page/min
@@ -38,18 +57,33 @@
   </mat-grid-tile>
 
   <mat-grid-tile colspan="1" rowspan="2">
-    <mat-card class="card">
-      <mat-card-header class="card__header text-large-bold"
-        >You read</mat-card-header
-      >
+    <mat-card class="card prevent-overflow">
+      <mat-card-header class="card__header text-normal-bold"
+        >You have
+      </mat-card-header>
       <mat-card-content class="card__content text-big-accent">
-        30
+        {{ totalBookSessionsCount }}
       </mat-card-content>
       <mat-card-footer class="card__footer text-normal">
-        books so far
+        sessions so far
       </mat-card-footer>
     </mat-card>
   </mat-grid-tile>
+  } @else {
+  <mat-grid-tile colspan="1" rowspan="2">
+    <mat-card class="card prevent-overflow">
+      <mat-card-header class="card__header text-normal-bold"
+        >Your watched movies</mat-card-header
+      >
+      <mat-card-content class="card__content text-big-accent">
+        7
+      </mat-card-content>
+      <mat-card-footer class="card__footer text-normal">
+        so far
+      </mat-card-footer>
+    </mat-card>
+  </mat-grid-tile>
+  } @if(mode=='Books'){
 
   <mat-grid-tile [colspan]="isSmallScreen ? 2 : 4" rowspan="2">
     <ngx-charts-bar-vertical
@@ -66,4 +100,21 @@
     >
     </ngx-charts-bar-vertical>
   </mat-grid-tile>
+  }@else {
+  <mat-grid-tile [colspan]="isSmallScreen ? 2 : 4" rowspan="2">
+    <ngx-charts-bar-vertical
+      [scheme]="colorScheme"
+      [results]="movieDataYear"
+      [gradient]="false"
+      [xAxis]="true"
+      [yAxis]="true"
+      [legend]="false"
+      [showXAxisLabel]="true"
+      [showYAxisLabel]="true"
+      xAxisLabel="Month"
+      yAxisLabel="Movies Watched"
+    >
+    </ngx-charts-bar-vertical>
+  </mat-grid-tile>
+  }
 </mat-grid-list>
