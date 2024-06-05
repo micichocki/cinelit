@@ -8,6 +8,7 @@ cineLit/pyvenv.cfg
 cineLit/Lib/
 cineLit/Scripts/
 cineLit/__pycache__/
+cineLit/cineLit/Lib/
 
 cineLit/books/__pycache__/
 cineLit/books/migrations/__pycache__/

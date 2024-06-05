@@ -1,27 +1,27 @@
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { ButtonComponent } from 'src/app/shared/components/button/button.component';
-import { Book, Movie } from 'src/app/shared/services/repository.service';
+import { Component, Inject } from "@angular/core";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { Router } from "@angular/router";
+import { ButtonComponent } from "src/app/shared/components/button/button.component";
+import { Book, Movie } from "src/app/shared/services/repository.service";
 
 export interface DialogData {
   item: Book | Movie;
 }
 
 @Component({
-  selector: 'app-details-dialog',
+  selector: "app-details-dialog",
   standalone: true,
   imports: [ButtonComponent],
-  templateUrl: './details-dialog.component.html',
-  styleUrl: './details-dialog.component.scss'
+  templateUrl: "./details-dialog.component.html",
+  styleUrl: "./details-dialog.component.scss",
 })
 export class DetailsDialogComponent {
   get item() {
     return this.data.item;
   }
 
-  isBook(item: any):item is Book {
-    return (this.data.item as any).num_of_pages
+  isBook(item: any): item is Book {
+    return (this.data.item as any).num_of_pages;
   }
 
   constructor(
@@ -32,14 +32,17 @@ export class DetailsDialogComponent {
 
   onContinueClick() {
     this.close();
-    this.router.navigate(['/item/session'], { queryParams: { id: this.data.item.id } })
+    this.router.navigate(["/current/"], {
+      queryParams: { id: this.data.item.id },
+    });
+    // this.router.navigate(["/item/session"], {
+    //   queryParams: { id: this.data.item.id },
+    // });
   }
 
   close(): void {
     this.dialogRef.close();
   }
 
-  onDeleteClick() {
-
-  }
+  onDeleteClick() {}
 }

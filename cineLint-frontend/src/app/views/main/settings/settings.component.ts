@@ -1,24 +1,30 @@
-import { Component } from '@angular/core';
-import { MainStoreService } from '../store/main-store.service';
-import { ButtonComponent } from 'src/app/shared/components/button/button.component';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { Component } from "@angular/core";
+import { MainStoreService } from "../store/main-store.service";
+import { ButtonComponent } from "src/app/shared/components/button/button.component";
+import { AuthService } from "src/app/shared/services/auth.service";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-settings',
+  selector: "app-settings",
   standalone: true,
   imports: [ButtonComponent],
-  templateUrl: './settings.component.html',
-  styleUrl: './settings.component.scss'
+  templateUrl: "./settings.component.html",
+  styleUrl: "./settings.component.scss",
 })
 export class SettingsComponent {
-  constructor(private store: MainStoreService, private authService: AuthService) {}
+  constructor(
+    private store: MainStoreService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    this.store.setCurrentSubpage('Settings');
+    this.store.setCurrentSubpage("Settings");
   }
 
   logout() {
     this.authService.logout();
+    this.router.navigate(["/login"]);
   }
 
   deleteAccount() {
